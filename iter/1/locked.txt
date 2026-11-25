@@ -1,0 +1,57 @@
+# locked_diff iter/0/doc.txt -> iter/1/doc.txt (no previous patch)
+LOCKED (someone else's edit): * The goal of this assignment demonstrates Extract, Load, Transform pipeline using Home Depot product data into Snowflake and running data transformations. ELT pipeline that loads Home Depot product data into Snowflake, transforms it with d
+LOCKED (someone else's edit): * Architecture diagram: CSV (local) → extract (validate, PUT) → stage HW32.RAW.PRODUCTS_STAGE → load_staging (COPY in one transaction) → RAW.STG_PRODUCTS_RAW → stg_products (view) → products_snapshot (SNAPSHOTS) → dim_products (ANALYTICS, j
+LOCKED (someone else's edit): * Blue dashed = a task writes or runs, gray dashed = a task only reads, solid = data flow.
+LOCKED (someone else's edit): * Airflow 3.4.0 (Astro Runtime 3.4-1, Python 3.14), Cosmos 1.16.0, apache-airflow-providers-snowflake 6.21.0, common-sql 3.0.0, snowflake-connector-python 5.2.0; dbt-core 1.10.23 with dbt-snowflake 1.10.8, each in its own Python 3.12 virtua
+LOCKED (someone else's edit): * Natural key: product_id (unique); notes: sku has nulls and duplicates (144 null, 373 repeat SKU)
+LOCKED (someone else's edit): * Location: local: airflow/include/data/home_depot_data_1_2021_12.csv, which the extract task uploads to Snowflake's internal stage. Transformed datasets per run include: original.csv = run 1, run2.csv = run 2, the current file = run 3
+LOCKED (someone else's edit): * DDL snippet + row count 2,551: The landing table is the one Snowsight's load wizard created on Nov 20 (14 columns, price as FLOAT), so the file loads column for column and all type conversion happens in stg_products.
+LOCKED (someone else's edit): * Tasks: extract → load_staging → dbt_transform → verify → clone_dev_database
+LOCKED (someone else's edit): * Daily at midnight Pacific (catchup off): extract validates the CSV and PUTs it to the internal stage; load_staging runs DELETE, COPY (ON_ERROR='ABORT_STATEMENT'), and a row-count check in one transaction and rolls back on any error; Cosmo
+LOCKED (someone else's edit): @dag(start_date=pendulum.datetime(2026, 11, 1, tz=TZ), schedule="@daily", catchup=False,
+LOCKED (someone else's edit): tags=["hw32"],
+LOCKED (someone else's edit): default_args={"retries": 2, "retry_delay": timedelta(minutes=1),
+LOCKED (someone else's edit): "on_failure_callback": notify_failure})
+LOCKED (someone else's edit): def hw32_products_pipeline():
+LOCKED (someone else's edit): ...
+LOCKED (someone else's edit): @task
+LOCKED (someone else's edit): def load_staging(expected: int) -> int:
+LOCKED (someone else's edit): """Replace the RAW table in one transaction; roll back on any error or row-count mismatch."""
+LOCKED (someone else's edit): with SnowflakeHook(snowflake_conn_id=SNOWFLAKE_CONN).get_conn() as conn:
+LOCKED (someone else's edit): cur = conn.cursor()
+LOCKED (someone else's edit): cur.execute("BEGIN")
+LOCKED (someone else's edit): try:
+LOCKED (someone else's edit): cur.execute(f"DELETE FROM {RAW_TABLE}")
+LOCKED (someone else's edit): cur.execute(f"COPY INTO {RAW_TABLE} FROM @{STAGE} FILES=('{STAGED_FILE}') "
+LOCKED (someone else's edit): f"FILE_FORMAT=(FORMAT_NAME={FILE_FORMAT}) "
+LOCKED (someone else's edit): "FORCE=TRUE ON_ERROR='ABORT_STATEMENT'")
+LOCKED (someone else's edit): loaded = cur.execute(f"SELECT COUNT(*) FROM {RAW_TABLE}").fetchone()[0]
+LOCKED (someone else's edit): if loaded != expected:
+LOCKED (someone else's edit): raise ValueError(f"loaded {loaded} rows, expected {expected}")
+LOCKED (someone else's edit): except Exception:
+LOCKED (someone else's edit): cur.execute("ROLLBACK")
+LOCKED (someone else's edit): raise
+LOCKED (someone else's edit): cur.execute("COMMIT")
+LOCKED (someone else's edit): logging.info("staging rows: %s", loaded)
+LOCKED (someone else's edit): return loaded
+LOCKED (someone else's edit): dbt_transform = dbt_group("dbt_transform")
+LOCKED (someone else's edit): ...
+LOCKED (someone else's edit): load_staging(extract()) >> dbt_transform >> verify() >> clone_dev_database
+LOCKED (someone else's edit): 
+LOCKED (someone else's edit): 6. dbt Models, SCD2, Tests (rubric items 5–6)
+LOCKED (someone else's edit): * the snapshot only records that something changed; dim_products builds the SCD2 dimension with window functions (version via ROW_NUMBER, previous_price / previous_title via LAG, valid_to via LEAD or 9999-12-31, is_current, change_type, and
+LOCKED (someone else's edit): * models/marts/dim_products.sql
+LOCKED (someone else's edit): * 12 tests in the main build. Generic (schema.yml): stg_products.product_id unique and not_null; stg_products.price not_null; dim_products.product_sk unique and not_null; dim_products.product_id and version not_null; change_type accepted_va
+LOCKED (someone else's edit): windowed as (
+LOCKED (someone else's edit): select
+LOCKED (someone else's edit): *,
+LOCKED (someone else's edit): row_number() over (partition by product_id order by valid_from) as version,
+LOCKED (someone else's edit): lag(price) over (partition by product_id order by valid_from) as previous_price,
+LOCKED (someone else's edit): lag(title) over (partition by product_id order by valid_from) as previous_title,
+LOCKED (someone else's edit): lead(valid_from) over (partition by product_id order by valid_from) as next_valid_from
+LOCKED (someone else's edit): from versions
+LOCKED (someone else's edit): )
+LOCKED (someone else's edit): -- valid_to = coalesce(next_valid_from, '9999-12-31'), is_current = (next_valid_from is null)
+LOCKED (someone else's edit): 
+LOCKED (someone else's edit): * Cosmos is used instead of a single BashOperator dbt run so each dbt node is its own Airflow task, with its own retries and log. scd2_matches_snapshot reads two models, so the DAG sets should_detach_multiple_parents_tests=True in hw32_comm
+LOCKED (someone else's edit): 8. Run, Verify, Change and Re-run (rubric item 8)

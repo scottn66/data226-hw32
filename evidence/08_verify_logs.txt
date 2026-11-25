@@ -1,0 +1,8 @@
+--- log dag=hw32_products_pipeline run=manual__2026-11-24T09:20:07.443146+00:00 task=verify try=1 filter=/dim rows/
+2026-11-24T09:20:49.983645Z info dim rows=2805 current=2551 products=2551 history=254
+--- log dag=hw32_products_pipeline run=manual__2026-11-24T09:20:07.443146+00:00 task=load_staging try=1 filter=/staging rows/
+2026-11-24T09:20:16.525946Z info staging rows: 2551
+--- log dag=hw32_products_pipeline run=manual__2026-11-25T02:18:06.417949+00:00 task=verify try=1 filter=/dim rows/
+2026-11-25T02:18:55.783733Z info dim rows=2805 current=2551 products=2551 history=254
+--- log dag=hw32_products_pipeline run=manual__2026-11-25T02:18:06.417949+00:00 task=load_staging try=1 filter=/staging rows/
+2026-11-25T02:18:18.277791Z info staging rows: 2551

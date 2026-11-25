@@ -1,0 +1,33 @@
+# --- Secrets: never commit. Templates are in *.example files. ---
+airflow/.env
+airflow/include/profiles.yml
+airflow/include/rsa_key.p8
+airflow/include/rsa_key.pub
+airflow/include/.user.yml
+airflow/airflow_settings.yaml
+*.p8
+*.pem
+.env
+.env.*
+!.env.example
+
+# --- Local environments and generated output ---
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+logs/
+**/target/
+**/dbt_packages/
+.astro/standalone/
+.astro/worktrees/
+
+# --- Images that show the Snowflake account or login (redacted copies *_redacted.png are committed) ---
+screenshots/hw32_screenshots/01_dbt_debug_connection_ok.png
+screenshots/hw32_screenshots/06_airflow_run2_after_mutation_history127.png
+# Same images as screenshots/hw32_screenshots/, unredacted
+screenshots/hw32_screenshots.zip
+# Google Doc PDF exports embed the unredacted dbt debug screenshot; the text exports (doc.txt) are kept
+iter/*/doc.pdf
+# Page renders of the Google Doc made during the writeup loop
+iter/*/*.png

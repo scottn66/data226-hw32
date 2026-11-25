@@ -1,0 +1,28 @@
+# locked_diff iter/3/doc.txt -> iter/4/doc.txt (patch iter/3/report_patch.md)
+LOCKED (someone else's edit): * hw32_eoy_snapshot runs at midnight on Jan 1, Pacific time (schedule 0 0 1 1 *). Its tasks: ◦ freeze_snapshot clones HW32.SNAPSHOTS.PRODUCTS_SNAPSHOT AT(TIMESTAMP => the year boundary) into PRODUCTS_SNAPSHOT_EOY_<year>, and points the view
+LOCKED (someone else's edit): * The dbt model price_yoy compares each product's frozen price and title with today's dim_products, and labels it added, removed, repriced, retitled or unchanged.
+LOCKED (someone else's edit): * summarize_yoy logs the counts.
+LOCKED (someone else's edit): * hw32_prototype (manual) runs these tasks:
+LOCKED (someone else's edit): * clone_analytics_schema runs CREATE OR REPLACE SCHEMA HW32.PROTOTYPE CLONE HW32.ANALYTICS.
+LOCKED (someone else's edit): * dbt builds the new model price_bands with the proto target. Its ref('dim_products') therefore reads the cloned table, and prod is never written.
+LOCKED (someone else's edit): * show_results prints the table.
+LOCKED (someone else's edit): * drop_prototype_schema drops the schema even if an earlier task failed (trigger rule all_done).
+LOCKED (someone else's edit): * fail_if_prototype_failed runs only if the clone, the dbt build or show_results failed (trigger rule one_failed), so such a run still ends red after the cleanup. On success, it is skipped.
+LOCKED (someone else's edit): * Daily backup: hw32_daily_backup runs at midnight Pacific. Its tasks:
+LOCKED (someone else's edit): * backup_name derives HW32_BACKUP_<yyyymmdd> from the run's Pacific date. Airflow 3 manual runs have no logical date, so the spec's {{ ds_nodash }} is undefined there.
+LOCKED (someone else's edit): * backup_database runs CREATE DATABASE IF NOT EXISTS HW32_BACKUP_<yyyymmdd> CLONE HW32. IF NOT EXISTS means a second run on the same day cannot overwrite a good backup.
+LOCKED (someone else's edit): * prune_old_backups drops every backup dated before today minus 6 days, so it keeps 7: today's and the 6 before it.
+LOCKED (someone else's edit): * Restore: hw32_restore (manual) has three tasks:
+LOCKED (someone else's edit): * pick_backup takes the newest HW32_BACKUP_*, or a date passed as a parameter.
+LOCKED (someone else's edit): * restore_snapshots clones that backup's SNAPSHOTS schema into HW32.SNAPSHOTS_RESTORE and checks that the clone isn't empty. It then swaps the clone with HW32.SNAPSHOTS in one ALTER SCHEMA … SWAP WITH, and keeps the old schema as SNAPSHOTS_
+LOCKED (someone else's edit): * rerun_pipeline triggers hw32_products_pipeline and waits for it to finish.
+from-patch: 1. The snapshot strategy has to fit the data. The assignment's example snapshot uses the timestamp strategy on an updated_at column (evidence/00_assignment_snapshot_excerpt.txt), and this dataset has none. Its only time column, scraped_at, 
+from-patch: 2. Zero-copy clones are copy-on-write, so a clone costs no storage of its own until it changes. Every day HW32 is cloned twice, once to the dev database and once to a dated backup, and the restore swapped in a cloned schema. TABLE_STORAGE_M
+from-patch: 3. Time Travel is short for dbt's tables, so point-in-time work has to be scheduled. dbt creates its tables and snapshots on Snowflake as TRANSIENT: the year-end DAG logs "kind=TRANSIENT retention=1 day(s)", and SHOW TABLES gives retention_
+from-patch: 4. Retries fix temporary faults, not configuration errors. The DAGs' default arguments set retries=2 with a 1-minute delay, and the pipeline has a failure callback. On Nov 23, extract failed three times, a minute apart, with "The conn_id sn
+from-patch: 5. Cost comes from idle warehouse time, not from query time. Two X-Small warehouses were used: HW32_WH for the pipeline (auto-suspend 60 s) and COMPUTE_WH, Snowsight's default (auto-suspend 300 s). From WAREHOUSE_METERING_HISTORY and QUERY_
+LOCKED (someone else's edit): 
+from-patch: warehouse credits queries execution minutes auto-suspend
+from-patch: COMPUTE_WH 1.262 1670 1.5 300 s
+from-patch: HW32_WH 0.889 742 2.5 60 s
+from-patch: COMPUTE_WH cost more with less execution time. Snowflake bills a running warehouse per second, with a 60-second minimum each time it resumes, until auto-suspend stops it (Snowflake documentation). So most of the bill is idle time after que

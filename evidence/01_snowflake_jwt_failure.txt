@@ -1,0 +1,36 @@
+# Nov 24 midnight scheduled runs: failed tries before the SNOWFLAKE_JWT fix (read-only log capture 2026-11-24 19:00 PST)
+dag=hw32_products_pipeline run=scheduled__2026-11-24T08:00:00+00:00 state=success start=2026-11-24 00:24:08 PST end=2026-11-24 00:25:14 PST
+  extract                                          success    try=4 _PythonDecoratedOperator
+  load_staging                                     success    try=1 _PythonDecoratedOperator
+  dbt_transform.stg_products.run                   success    try=1 DbtRunLocalOperator
+  dbt_transform.stg_products.test                  success    try=1 DbtTestLocalOperator
+  dbt_transform.products_snapshot_snapshot         success    try=1 DbtSnapshotLocalOperator
+  dbt_transform.dim_products.run                   success    try=1 DbtRunLocalOperator
+  dbt_transform.dim_products.test                  success    try=1 DbtTestLocalOperator
+  dbt_transform.scd2_matches_snapshot_test         success    try=1 DbtTestLocalOperator
+  verify                                           success    try=1 _PythonDecoratedOperator
+  clone_dev_database                               success    try=1 SQLExecuteQueryOperator
+--- log dag=hw32_products_pipeline run=scheduled__2026-11-24T08:00:00+00:00 task=extract try=1 filter=/Task failed|authenticator|FAILED|Done\. Returned|rows/
+2026-11-24T08:00:02.170187Z error Task failed with exception | ProgrammingError: 251007: Configuration error: Configuration validation failed (1 issue(s)): authenticator: Cannot specify basic authenticator together with private key parameters; use 'SNOWFLAKE_JWT' or remove the private key parameters
+--- log dag=hw32_products_pipeline run=scheduled__2026-11-24T08:00:00+00:00 task=extract try=2 filter=/Task failed|authenticator|FAILED|Done\. Returned|rows/
+2026-11-24T08:01:02.948906Z error Task failed with exception | ProgrammingError: 251007: Configuration error: Configuration validation failed (1 issue(s)): authenticator: Cannot specify basic authenticator together with private key parameters; use 'SNOWFLAKE_JWT' or remove the private key parameters
+--- log dag=hw32_products_pipeline run=scheduled__2026-11-24T08:00:00+00:00 task=extract try=3 filter=/Task failed|authenticator|FAILED|Done\. Returned|rows/
+2026-11-24T08:02:03.816215Z error Task failed with exception | ProgrammingError: 251007: Configuration error: Configuration validation failed (1 issue(s)): authenticator: Cannot specify basic authenticator together with private key parameters; use 'SNOWFLAKE_JWT' or remove the private key parameters
+2026-11-24T08:02:03.818455Z error HW32 pipeline FAILED at task extract (try 3)
+--- log dag=hw32_products_pipeline run=scheduled__2026-11-24T08:00:00+00:00 task=extract try=4 filter=/Task failed|authenticator|FAILED|Done\. Returned|rows/
+2026-11-24T08:24:19.903697Z info source rows: 2551, staged as @HW32.RAW.PRODUCTS_STAGE/home_depot_data_1_2021_12.csv.gz
+2026-11-24T08:24:19.905546Z info Done. Returned value was: 2551
+dag=hw32_daily_backup run=scheduled__2026-11-24T08:00:00+00:00 state=success start=2026-11-24 00:32:59 PST end=2026-11-24 00:33:08 PST
+  backup_database                                  success    try=4 SQLExecuteQueryOperator
+  prune_old_backups                                success    try=1 _PythonDecoratedOperator
+--- log dag=hw32_daily_backup run=scheduled__2026-11-24T08:00:00+00:00 task=backup_database try=1 filter=/Task failed|authenticator|Executing:/
+2026-11-24T08:00:02.073784Z info Executing: CREATE DATABASE IF NOT EXISTS HW32_BACKUP_20261124 CLONE HW32
+2026-11-24T08:00:02.113175Z error Task failed with exception | ProgrammingError: 251007: Configuration error: Configuration validation failed (1 issue(s)): authenticator: Cannot specify basic authenticator together with private key parameters; use 'SNOWFLAKE_JWT' or remove the private key parameters
+--- log dag=hw32_daily_backup run=scheduled__2026-11-24T08:00:00+00:00 task=backup_database try=2 filter=/Task failed|authenticator|Executing:/
+2026-11-24T08:01:02.909424Z info Executing: CREATE DATABASE IF NOT EXISTS HW32_BACKUP_20261124 CLONE HW32
+2026-11-24T08:01:02.937842Z error Task failed with exception | ProgrammingError: 251007: Configuration error: Configuration validation failed (1 issue(s)): authenticator: Cannot specify basic authenticator together with private key parameters; use 'SNOWFLAKE_JWT' or remove the private key parameters
+--- log dag=hw32_daily_backup run=scheduled__2026-11-24T08:00:00+00:00 task=backup_database try=3 filter=/Task failed|authenticator|Executing:/
+2026-11-24T08:02:03.695044Z info Executing: CREATE DATABASE IF NOT EXISTS HW32_BACKUP_20261124 CLONE HW32
+2026-11-24T08:02:03.738917Z error Task failed with exception | ProgrammingError: 251007: Configuration error: Configuration validation failed (1 issue(s)): authenticator: Cannot specify basic authenticator together with private key parameters; use 'SNOWFLAKE_JWT' or remove the private key parameters
+--- log dag=hw32_daily_backup run=scheduled__2026-11-24T08:00:00+00:00 task=backup_database try=4 filter=/Task failed|authenticator|Executing:/
+2026-11-24T08:33:00.039099Z info Executing: CREATE DATABASE IF NOT EXISTS HW32_BACKUP_20261124 CLONE HW32

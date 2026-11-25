@@ -1,0 +1,28 @@
+dag=hw32_prototype run=manual__2026-11-24T22:08:29.063686+00:00 state=success start=2026-11-24 14:08:30 PST end=2026-11-24 14:08:54 PST
+  clone_analytics_schema                           success    try=1 SQLExecuteQueryOperator
+  dbt_prototype.price_bands.run                    success    try=1 DbtRunLocalOperator
+  dbt_prototype.price_bands.test                   success    try=1 DbtTestLocalOperator
+  show_results                                     success    try=1 SQLExecuteQueryOperator
+  fail_if_prototype_failed                         skipped    try=0 _PythonDecoratedOperator
+  drop_prototype_schema                            success    try=1 SQLExecuteQueryOperator
+--- log dag=hw32_prototype run=manual__2026-11-24T22:08:29.063686+00:00 task=clone_analytics_schema try=1 filter=/Executing/
+2026-11-24T22:08:31.919369Z info Executing: CREATE OR REPLACE SCHEMA HW32.PROTOTYPE CLONE HW32.ANALYTICS
+2026-11-24T22:08:33.454077Z info Executing sync query request_id=89bc8d58-3345-42e2-b2ea-f563503239a3
+2026-11-24T22:08:33.809474Z info Executing sync query request_id=9bae6481-687b-4c4a-9981-ab25c42cc2f4
+2026-11-24T22:08:38.014395Z info Executing sync query request_id=eed4d01f-6f0b-4bb5-b323-815f070526a9
+--- log dag=hw32_prototype run=manual__2026-11-24T22:08:29.063686+00:00 task=show_results try=1 filter=/Operator output|Executing/
+2026-11-24T22:08:50.211231Z info Executing: SELECT * FROM HW32.PROTOTYPE.PRICE_BANDS ORDER BY price_band
+2026-11-24T22:08:50.874196Z info Executing sync query request_id=1a3f6982-5b97-45f8-9542-32106d017400
+2026-11-24T22:08:51.104492Z info Executing sync query request_id=31917131-e70f-4635-be14-4d7ee2ec0579
+2026-11-24T22:08:51.269748Z info Executing sync query request_id=42695d24-c55e-454a-bd67-2734462c736f
+2026-11-24T22:08:51.613918Z info Operator output is: [[('1: under $25', 532, 211, Decimal('0.78'), Decimal('15.98000'), Decimal('24.99'), Decimal('20.9'), 59, 42, Decimal('7.9')), ('2: $25-99', 930, 351, Decimal('25.00'), Decimal('46.98000'), Decimal('99.99'), Decimal('36.5'), 91, 59, Decimal('6.3')), ('3: $100-499', 834, 304, Decimal('100.00'), Decimal('187.07500'), Decimal('499.99'), Decimal('32.7'), 81, 58, Decimal('7.0')), ('4: $500+', 255, 123, Decimal('501.22'), Decimal('919.29000'), Decimal('9433.70'), Decimal('10.0'), 17, 9, Decimal('3.5'))]]
+--- log dag=hw32_prototype run=manual__2026-11-24T22:08:29.063686+00:00 task=drop_prototype_schema try=1 filter=/Executing/
+2026-11-24T22:08:52.303351Z info Executing: DROP SCHEMA IF EXISTS HW32.PROTOTYPE
+2026-11-24T22:08:52.948901Z info Executing sync query request_id=918ca30a-f708-47e5-8dc6-a6037f51471e
+2026-11-24T22:08:53.108386Z info Executing sync query request_id=021946b7-040a-4504-b249-fdef0450ff9f
+2026-11-24T22:08:53.339365Z info Executing sync query request_id=c2472db8-018c-4f42-b381-5a8000a3b21e
+# captured 2026-11-24 18:49:58 PST via Airflow connection snowflake_conn (read-only)
+
+>> SHOW SCHEMAS LIKE 'PROTOTYPE' IN DATABASE HW32
+   created_on | name | is_default | is_current | database_name | owner | comment | options | retention_time | owner_role_type | classification_profile_database | classification_profile_schema | classification_profile | object_visibility | is_nested
+   (0 rows)

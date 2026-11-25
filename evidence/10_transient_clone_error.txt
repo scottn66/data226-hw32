@@ -1,0 +1,6 @@
+# captured 2026-11-24 18:50:15 PST via Airflow connection snowflake_conn (read-only)
+
+>> SELECT start_time, query_type, error_code, error_message FROM SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY WHERE start_time >= '2026-11-23' AND error_message ILIKE '%Transient object cannot be cloned%' ORDER BY start_time
+   START_TIME | QUERY_TYPE | ERROR_CODE | ERROR_MESSAGE
+   2026-11-24 13:50:10.664000-08:00 | CREATE_TABLE | 002120 | SQL compilation error: Transient object cannot be cloned to a permanent object.
+   (1 rows)

@@ -1,0 +1,11 @@
+# captured 2026-11-24 18:50:04 PST via Airflow connection snowflake_conn (read-only)
+
+>> SHOW SCHEMAS IN DATABASE HW32
+   created_on | name | is_default | is_current | database_name | owner | comment | options | retention_time | owner_role_type | classification_profile_database | classification_profile_schema | classification_profile | object_visibility | is_nested
+   2026-11-20 00:56:42.191000-08:00 | ANALYTICS | N | N | HW32 | ACCOUNTADMIN |  |  | 1 | ROLE | None | None | None | None | false
+   2026-11-24 18:50:06.006000-08:00 | INFORMATION_SCHEMA | N | N | HW32 |  | Views describing the contents of schemas in this database |  | 1 |  | None | None | None | None | false
+   2026-11-20 00:52:49.990000-08:00 | PUBLIC | N | N | HW32 | ACCOUNTADMIN |  |  | 1 | ROLE | None | None | None | None | false
+   2026-11-20 00:56:41.111000-08:00 | RAW | N | Y | HW32 | ACCOUNTADMIN |  |  | 1 | ROLE | None | None | None | None | false
+   2026-11-24 00:39:27.833000-08:00 | SNAPSHOTS | N | N | HW32 | ACCOUNTADMIN |  |  | 1 | ROLE | None | None | None | None | false
+   2026-11-22 18:43:54.258000-08:00 | SNAPSHOTS_PRE_RESTORE_20261124_003926 | N | N | HW32 | ACCOUNTADMIN |  |  | 1 | ROLE | None | None | None | None | false
+   (6 rows)

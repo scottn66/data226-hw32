@@ -1,0 +1,49 @@
+dag=hw32_dev_clone_rating run=manual__2026-11-24T08:29:21.242374+00:00 state=success start=2026-11-24 00:29:21 PST end=2026-11-24 00:30:17 PST
+  clone_prod_to_dev                                success    try=1 SQLExecuteQueryOperator
+  land_ratings_in_dev                              success    try=1 SQLExecuteQueryOperator
+  fingerprint_prod                                 success    try=1 _PythonDecoratedOperator
+  dbt_dev.stg_products.run                         success    try=1 DbtRunLocalOperator
+  dbt_dev.stg_products.test                        success    try=1 DbtTestLocalOperator
+  dbt_dev.products_snapshot_snapshot               success    try=1 DbtSnapshotLocalOperator
+  dbt_dev.dim_products.run                         success    try=1 DbtRunLocalOperator
+  dbt_dev.dim_products.test                        success    try=1 DbtTestLocalOperator
+  dbt_dev.scd2_matches_snapshot_test               success    try=1 DbtTestLocalOperator
+  check_dev_feature                                success    try=1 SQLCheckOperator
+  check_prod_untouched                             success    try=1 _PythonDecoratedOperator
+  promote_ratings_to_prod                          success    try=1 SQLExecuteQueryOperator
+--- log dag=hw32_dev_clone_rating run=manual__2026-11-24T08:29:21.242374+00:00 task=clone_prod_to_dev try=1 filter=/Executing|fingerprint|Record|Success|True|ERROR/
+2026-11-24T08:29:22.123991Z info Executing: CREATE OR REPLACE DATABASE HW32_DEV CLONE HW32
+2026-11-24T08:29:22.804635Z info Executing sync query request_id=b0017099-1077-4083-95df-1db965c5637f
+2026-11-24T08:29:23.054654Z info Executing sync query request_id=cf0f5383-f224-4a62-a0cf-7d7182130ee1
+2026-11-24T08:29:27.352977Z info Executing sync query request_id=b8504fec-eb64-4fc1-a8e7-ba139bbd9122
+--- log dag=hw32_dev_clone_rating run=manual__2026-11-24T08:29:21.242374+00:00 task=land_ratings_in_dev try=1 filter=/Executing|fingerprint|Record|Success|True|ERROR/
+2026-11-24T08:29:28.146443Z info Executing: 
+            CREATE OR REPLACE TABLE HW32_DEV.RAW.PRODUCT_RATINGS AS
+            SELECT product_id,
+                   ROUND(1 + MOD(ABS(HASH(product_id)), 41) / 10, 1)::NUMBER(2, 1) AS rating,
+                   CURRENT_TIMESTAMP() AS loaded_at
+            FROM HW32_DEV.RAW.STG_PRODUCTS_RAW
+2026-11-24T08:29:28.860136Z info Executing sync query request_id=21e4529f-1519-4474-8f9c-86b587a0d494
+2026-11-24T08:29:29.075837Z info Executing sync query request_id=1afa0d16-ce67-437c-a5fc-bd356e092599
+2026-11-24T08:29:30.080651Z info Executing sync query request_id=10648302-cac6-4a75-be9d-c3dbae8fa8b7
+--- log dag=hw32_dev_clone_rating run=manual__2026-11-24T08:29:21.242374+00:00 task=check_dev_feature try=1 filter=/Executing|fingerprint|Record|Success|True|ERROR/
+2026-11-24T08:30:09.749277Z info Executing SQL check: 
+            SELECT COUNT(*) > 0,                       -- dev dimension built
+                   COUNT_IF(rating IS NULL) = 0,       -- every version has a rating
+                   MIN(rating) >= 1 AND MAX(rating) <= 5
+            FROM HW32_DEV.ANALYTICS.DIM_PRODUCTS
+2026-11-24T08:30:10.441085Z info Executing sync query request_id=6b5b5734-b32f-4e2f-a6dd-a429e3aea834
+2026-11-24T08:30:10.646812Z info Executing sync query request_id=de5e46d8-c7ce-4c98-bcda-5585992baff3
+2026-11-24T08:30:10.906611Z info Executing sync query request_id=ca202ae7-7c6c-41de-8c35-a6174653a7c8
+2026-11-24T08:30:11.363167Z info Record: (True, True, True)
+2026-11-24T08:30:11.363309Z info Success.
+--- log dag=hw32_dev_clone_rating run=manual__2026-11-24T08:29:21.242374+00:00 task=check_prod_untouched try=1 filter=/Executing|fingerprint|Record|Success|True|ERROR/
+2026-11-24T08:30:13.232509Z info Executing sync query request_id=4c219840-d3b4-4398-8b57-85e4a4d4b061
+2026-11-24T08:30:13.405539Z info Executing sync query request_id=a1fce90a-c2a8-45cc-be7d-f6eda19a8a0f
+2026-11-24T08:30:13.609224Z info Executing sync query request_id=72882035-20c9-4d2f-b63c-976ecdc4790f
+2026-11-24T08:30:14.059445Z info prod DIM_PRODUCTS fingerprint before=2728168932473494028 after=2728168932473494028
+--- log dag=hw32_dev_clone_rating run=manual__2026-11-24T08:29:21.242374+00:00 task=promote_ratings_to_prod try=1 filter=/Executing|fingerprint|Record|Success|True|ERROR/
+2026-11-24T08:30:14.758445Z info Executing: CREATE OR REPLACE TABLE HW32.RAW.PRODUCT_RATINGS CLONE HW32_DEV.RAW.PRODUCT_RATINGS
+2026-11-24T08:30:15.386019Z info Executing sync query request_id=2ae2e3b7-708f-45c2-8b2f-6b2a3cbf7e78
+2026-11-24T08:30:15.544710Z info Executing sync query request_id=b1e72551-96ef-4604-a981-4280394e3300
+2026-11-24T08:30:16.821236Z info Executing sync query request_id=ff911759-1dc2-465f-9114-46bc2844b9d3

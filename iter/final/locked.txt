@@ -1,0 +1,7 @@
+# locked_diff iter/4/doc.txt -> iter/final/doc.txt (patch iter/4/report_patch.md)
+from-patch: To make the exercise teach more, I would change four things in the assignment, each prompted by something that went wrong or went untested in this project:
+from-patch: 1. Update the starter code for Airflow 3 and for the dataset. The handout's snippets use three things that no longer work with Airflow 3.4 and Snowflake provider 6.21, the versions used here (evidence/01_versions.txt). SnowflakeOperator no 
+from-patch: 2. Make the change step cover every SCD2 case. mutate_source.py only edits the price or title of existing rows. Each of the two mutations changed 127 products and added or removed none (evidence/08_source_diffs.txt). Adding new products and
+from-patch: 3. Make 9.2 and 9.4 hands-on. 9.2 asks for a clone as of a past year end (evidence/00_assignment_cloning_excerpt.txt), which Time Travel can't reach here: dbt's tables are transient with 1-day retention (evidence/92_eoy_logs.txt, evidence/9
+from-patch: 4. Optional last phase: incremental loading. Replace the full reload with an external stage and Snowpipe or a Stream/Task, make dim_products a dbt incremental model, and take backups from a dbt post-hook. Students would then have to deal wi
+LOCKED (someone else's edit): * Claude Code (Anthropic) captured read-only evidence, kept in hw32/evidence/: query results, Airflow logs, version and import checks, and copies of the source files. It drafted new or replacement text for sections 6, 9, 10, and 11, and a s

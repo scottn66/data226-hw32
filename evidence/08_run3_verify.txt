@@ -1,0 +1,6 @@
+# captured 2026-11-24 18:49:42 PST via Airflow connection snowflake_conn (read-only)
+
+>> SELECT COUNT(*) AS dim_rows, COUNT_IF(is_current) AS current_rows, COUNT(DISTINCT product_id) AS products, COUNT(*) - COUNT_IF(is_current) AS history FROM HW32.ANALYTICS.DIM_PRODUCTS
+   DIM_ROWS | CURRENT_ROWS | PRODUCTS | HISTORY
+   2805 | 2551 | 2551 | 254
+   (1 rows)

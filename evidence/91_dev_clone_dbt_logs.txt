@@ -1,0 +1,26 @@
+# batch 2, 2026-11-24 19:20 PST: read-only log capture
+--- log dag=hw32_dev_clone_rating run=manual__2026-11-24T08:29:21.242374+00:00 task=dbt_dev.stg_products.test try=1 filter=/OK created|Done\.|PASS rating|target=/
+2026-11-24T08:29:40.066611Z info 08:29:40  Concurrency: 4 threads (target='dev')
+2026-11-24T08:29:42.728917Z info 08:29:42  Done. PASS=3 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=3
+--- log dag=hw32_dev_clone_rating run=manual__2026-11-24T08:29:21.242374+00:00 task=dbt_dev.dim_products.run try=1 filter=/OK created|Done\.|PASS rating|target=/
+2026-11-24T08:29:55.357618Z info 08:29:55  Concurrency: 4 threads (target='dev')
+2026-11-24T08:29:58.095739Z info 08:29:58  1 of 1 OK created sql table model ANALYTICS.dim_products ....................... [SUCCESS 1 in 1.25s]
+2026-11-24T08:29:58.652568Z info 08:29:58  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=1
+--- log dag=hw32_dev_clone_rating run=manual__2026-11-24T08:29:21.242374+00:00 task=dbt_dev.dim_products.test try=1 filter=/OK created|Done\.|PASS rating|target=/
+2026-11-24T08:30:01.240272Z info 08:30:01  Concurrency: 4 threads (target='dev')
+2026-11-24T08:30:03.024947Z info 08:30:03  7 of 8 PASS rating_in_range .................................................... [PASS in 0.33s]
+2026-11-24T08:30:04.245157Z info 08:30:04  Done. PASS=8 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=8
+--- log dag=hw32_dev_clone_rating run=manual__2026-11-24T08:29:21.242374+00:00 task=dbt_dev.scd2_matches_snapshot_test try=1 filter=/OK created|Done\.|PASS rating|target=/
+2026-11-24T08:30:06.213563Z info 08:30:06  Concurrency: 4 threads (target='dev')
+2026-11-24T08:30:08.026661Z info 08:30:08  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=1
+--- log dag=hw32_dev_clone_rating run=manual__2026-11-24T08:29:21.242374+00:00 task=promote_ratings_to_prod try=1 filter=/Executing|CLONE/
+2026-11-24T08:30:14.758445Z info Executing: CREATE OR REPLACE TABLE HW32.RAW.PRODUCT_RATINGS CLONE HW32_DEV.RAW.PRODUCT_RATINGS
+2026-11-24T08:30:15.386019Z info Executing sync query request_id=2ae2e3b7-708f-45c2-8b2f-6b2a3cbf7e78
+2026-11-24T08:30:15.543596Z info Running statement: CREATE OR REPLACE TABLE HW32.RAW.PRODUCT_RATINGS CLONE HW32_DEV.RAW.PRODUCT_RATINGS, parameters: None
+2026-11-24T08:30:15.544710Z info Executing sync query request_id=b1e72551-96ef-4604-a981-4280394e3300
+2026-11-24T08:30:16.821236Z info Executing sync query request_id=ff911759-1dc2-465f-9114-46bc2844b9d3
+## daily clone task in the main pipeline (scheduled midnight run, and the 6:18 PM run)
+--- log dag=hw32_products_pipeline run=scheduled__2026-11-24T08:00:00+00:00 task=clone_dev_database try=1 filter=/Executing:/
+2026-11-24T08:25:09.266092Z info Executing: CREATE OR REPLACE DATABASE HW32_DEV CLONE HW32
+--- log dag=hw32_products_pipeline run=manual__2026-11-25T02:18:06.417949+00:00 task=clone_dev_database try=1 filter=/Executing:/
+2026-11-25T02:18:56.277537Z info Executing: CREATE OR REPLACE DATABASE HW32_DEV CLONE HW32

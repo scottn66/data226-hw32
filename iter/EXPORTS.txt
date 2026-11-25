@@ -1,0 +1,11 @@
+iter/0/doc.txt: Drive text export 2026-11-24 14:27 PT (after the 35 [Claude] comments, before Scott's evening edits)
+iter/1/doc.txt: Drive text export 2026-11-24 18:50 PT; doc modifiedTime 2026-11-25T02:24:08Z (18:24 PT)
+iter/1/doc.pdf: PDF export 18:29 PT (same doc revision; used to read screenshots)
+iter/1/doc_patched.txt: iter/1/doc.txt with report_patch.md (round 1) applied by script, for the would-be re-score; not a real export
+iter/2/doc.txt + doc.pdf: Drive exports 2026-11-24 19:19 PT; doc modifiedTime 2026-11-25T03:17:48Z (19:17 PT)
+iter/2/doc_patched.txt: iter/2/doc.txt with report_patch.md (round 2) applied by script, for the would-be re-score; not a real export
+iter/3/doc.txt + doc.pdf: Drive exports 2026-11-24 19:54 PT; doc modifiedTime 2026-11-25T03:49:45Z (19:49 PT)
+iter/3/doc_patched.txt: iter/3/doc.txt with report_patch.md (round 3) applied by script, for the would-be re-score; not a real export
+iter/4/doc.txt + doc.pdf: Drive exports 2026-11-24 20:14 PT; doc modifiedTime 2026-11-25T04:12:29Z (20:12 PT)
+iter/4/doc_patched.txt: iter/4/doc.txt with report_patch.md (round 4) applied by script, for the would-be re-score; not a real export
+iter/final/doc.txt + doc.pdf: Drive exports 2026-11-24 20:47 PT; doc modifiedTime 2026-11-25T04:46:19Z (20:46 PT); final check after round 4 (not a loop round)

@@ -1,0 +1,19 @@
+dag=hw32_products_pipeline run=scheduled__2026-11-23T08:00:00+00:00 state=failed start=2026-11-23 15:06:25 PST end=2026-11-23 15:08:40 PST
+  extract                                          failed     try=3 _PythonDecoratedOperator
+  load_staging                                     upstream_failed try=0 _PythonDecoratedOperator
+  dbt_transform.stg_products.run                   upstream_failed try=0 DbtRunLocalOperator
+  dbt_transform.stg_products.test                  upstream_failed try=0 DbtTestLocalOperator
+  dbt_transform.products_snapshot.snapshot         upstream_failed try=0 DbtSnapshotLocalOperator
+  dbt_transform.products_snapshot.test             upstream_failed try=0 DbtTestLocalOperator
+  dbt_transform.dim_products.run                   upstream_failed try=0 DbtRunLocalOperator
+  dbt_transform.dim_products.test                  upstream_failed try=0 DbtTestLocalOperator
+  verify                                           upstream_failed try=0 _PythonDecoratedOperator
+  clone_dev_database                               upstream_failed try=0 SQLExecuteQueryOperator
+  dbt_transform.products_snapshot_snapshot         removed    try=0 DbtSnapshotLocalOperator
+--- log dag=hw32_products_pipeline run=scheduled__2026-11-23T08:00:00+00:00 task=extract try=1 filter=/ERROR|isn't defined|FAILED|Marking|retry|UP_FOR_RETRY|Task failed/
+2026-11-23T23:06:27.812672Z error Task failed with exception | AirflowNotFoundException: The conn_id `snowflake_conn` isn't defined
+--- log dag=hw32_products_pipeline run=scheduled__2026-11-23T08:00:00+00:00 task=extract try=2 filter=/ERROR|isn't defined|FAILED|Marking|retry|UP_FOR_RETRY|Task failed/
+2026-11-23T23:07:31.008481Z error Task failed with exception | AirflowNotFoundException: The conn_id `snowflake_conn` isn't defined
+--- log dag=hw32_products_pipeline run=scheduled__2026-11-23T08:00:00+00:00 task=extract try=3 filter=/ERROR|isn't defined|FAILED|Marking|retry|UP_FOR_RETRY|Task failed/
+2026-11-23T23:08:31.669940Z error Task failed with exception | AirflowNotFoundException: The conn_id `snowflake_conn` isn't defined
+2026-11-23T23:08:31.672336Z error HW32 pipeline FAILED at task extract (try 3)

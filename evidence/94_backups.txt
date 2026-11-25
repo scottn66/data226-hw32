@@ -1,0 +1,6 @@
+# captured 2026-11-24 18:50:01 PST via Airflow connection snowflake_conn (read-only)
+
+>> SHOW DATABASES LIKE 'HW32_BACKUP_%'
+   created_on | name | is_default | is_current | origin | owner | comment | options | retention_time | kind | owner_role_type | object_visibility | data_quality_monitoring_settings | resharing_settings
+   2026-11-24 00:33:00.970000-08:00 | HW32_BACKUP_20261124 | N | N |  | ACCOUNTADMIN |  |  | 1 | STANDARD | ROLE | None | None | None
+   (1 rows)

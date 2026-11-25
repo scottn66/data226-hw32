@@ -1,0 +1,20 @@
+dag=hw32_eoy_snapshot run=manual__2026-11-24T09:21:09.363737+00:00 state=success start=2026-11-24 01:21:09 PST end=2026-11-24 01:21:29 PST
+  freeze_snapshot                                  success    try=1 _PythonDecoratedOperator
+  dbt_price_yoy.price_yoy.run                      success    try=1 DbtRunLocalOperator
+  dbt_price_yoy.price_yoy.test                     success    try=1 DbtTestLocalOperator
+  summarize_yoy                                    success    try=1 SQLExecuteQueryOperator
+--- log dag=hw32_eoy_snapshot run=manual__2026-11-24T09:21:09.363737+00:00 task=freeze_snapshot try=1 filter=/source|cloned|ERROR/
+2026-11-24T09:21:09.842951Z warning failed to load region from IMDS err=failed to load IMDS session token: dispatch failure: io error: error sending request for url (http://169.254.169.254/latest/api/token): client error (Connect): tcp connect error: Connection refused (os error 111) (FailedToLoadToken(FailedToLoadToken { source: DispatchFailure(DispatchFailure { source: ConnectorError { kind: Io, source: reqwest::Error { kind: Request, url: "http://169.254.169.254/latest/api/token", source: hyper_util::client::legacy::Error(Connect, ConnectError("tcp connect error", 169.254.169.254:80, Os { code: 111, kind: ConnectionRefused, message: "Connection refused" })) }, connection: Unknown } }) }))
+2026-11-24T09:21:09.844333Z warning failed to load region from IMDS err=failed to load IMDS session token: dispatch failure: io error: error sending request for url (http://169.254.169.254/latest/api/token): client error (Connect): tcp connect error: Connection refused (os error 111) (FailedToLoadToken(FailedToLoadToken { source: DispatchFailure(DispatchFailure { source: ConnectorError { kind: Io, source: reqwest::Error { kind: Request, url: "http://169.254.169.254/latest/api/token", source: hyper_util::client::legacy::Error(Connect, ConnectError("tcp connect error", 169.254.169.254:80, Os { code: 111, kind: ConnectionRefused, message: "Connection refused" })) }, connection: Unknown } }) }))
+2026-11-24T09:21:10.464948Z info source HW32.SNAPSHOTS.PRODUCTS_SNAPSHOT kind=TRANSIENT retention=1 day(s)
+2026-11-24T09:21:13.233248Z info cloned HW32.SNAPSHOTS.PRODUCTS_SNAPSHOT_PIT_20261124_0118 as of 2026-11-24 01:18:00 -08:00: 2678 snapshot rows then, 2805 now
+--- log dag=hw32_eoy_snapshot run=manual__2026-11-24T09:21:09.363737+00:00 task=summarize_yoy try=1 filter=/Operator output|Executing/
+2026-11-24T09:21:28.237208Z info Executing: 
+            SELECT compared_to, status, COUNT(*) AS products,
+                   ROUND(AVG(pct_change), 2) AS avg_pct_change
+            FROM HW32.ANALYTICS.PRICE_YOY
+            GROUP BY 1, 2 ORDER BY 2
+2026-11-24T09:21:28.646394Z info Executing sync query request_id=ed4f4e14-0726-468f-8368-0f6e57db8eb3
+2026-11-24T09:21:28.819897Z info Executing sync query request_id=9b4f6c3c-c4d5-4cf6-87a2-b6476523dde7
+2026-11-24T09:21:29.081828Z info Executing sync query request_id=d88345dd-d3ec-42d5-a49a-2082ba5c09cd
+2026-11-24T09:21:29.438890Z info Operator output is: [[('PIT_20261124_0118', 'repriced', 83, Decimal('1.63')), ('PIT_20261124_0118', 'retitled', 44, Decimal('0.00')), ('PIT_20261124_0118', 'unchanged', 2424, Decimal('0.00'))]]

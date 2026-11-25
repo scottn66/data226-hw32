@@ -1,0 +1,29 @@
+# captured 2026-11-24 18:49:55 PST via Airflow connection snowflake_conn (read-only)
+
+>> SELECT compared_to, status, COUNT(*) AS products, ROUND(AVG(pct_change), 2) AS avg_pct_change, MIN(pct_change), MAX(pct_change) FROM HW32.ANALYTICS.PRICE_YOY GROUP BY 1, 2 ORDER BY 2
+   COMPARED_TO | STATUS | PRODUCTS | AVG_PCT_CHANGE | MIN(PCT_CHANGE) | MAX(PCT_CHANGE)
+   PIT_20261124_0118 | repriced | 83 | 1.63 | -19.45 | 19.67
+   PIT_20261124_0118 | retitled | 44 | 0.00 | 0.00 | 0.00
+   PIT_20261124_0118 | unchanged | 2424 | 0.00 | 0.00 | 0.00
+   (3 rows)
+
+>> SELECT COUNT(*) FROM HW32.SNAPSHOTS.PRODUCTS_SNAPSHOT_PIT_20261124_0118
+   COUNT(*)
+   2678
+   (1 rows)
+
+>> SHOW TABLES IN SCHEMA HW32.SNAPSHOTS
+   created_on | name | database_name | schema_name | kind | comment | cluster_by | rows | bytes | owner | retention_time | automatic_clustering | change_tracking | search_optimization | search_optimization_progress | search_optimization_bytes | is_external | enable_schema_evolution | owner_role_type | is_event | is_hybrid | is_iceberg | is_dynamic | is_immutable | is_interactive | row_timestamp | error_logging
+   2026-11-24 00:39:27.833000-08:00 | PRODUCTS_SNAPSHOT | HW32 | SNAPSHOTS | TRANSIENT |  |  | 2805 | 1146880 | ACCOUNTADMIN | 1 | OFF | OFF | OFF | None | None | N | N | ROLE | N | N | N | N | N | N | OFF | OFF
+   2026-11-24 00:39:27.833000-08:00 | PRODUCTS_SNAPSHOT_PIT | HW32 | SNAPSHOTS | TRANSIENT |  |  | 2678 | 1104896 | ACCOUNTADMIN | 1 | OFF | OFF | OFF | None | None | N | N | ROLE | N | N | N | N | N | N | OFF | OFF
+   2026-11-24 00:39:27.833000-08:00 | PRODUCTS_SNAPSHOT_PIT_20261124_0000 | HW32 | SNAPSHOTS | TRANSIENT |  |  | 2678 | 1104896 | ACCOUNTADMIN | 1 | OFF | OFF | OFF | None | None | N | N | ROLE | N | N | N | N | N | N | OFF | OFF
+   2026-11-24 01:21:10.695000-08:00 | PRODUCTS_SNAPSHOT_PIT_20261124_0118 | HW32 | SNAPSHOTS | TRANSIENT |  |  | 2678 | 1099264 | ACCOUNTADMIN | 1 | OFF | OFF | OFF | None | None | N | N | ROLE | N | N | N | N | N | N | OFF | OFF
+   (4 rows)
+
+>> SHOW TABLES IN SCHEMA HW32.ANALYTICS
+   created_on | name | database_name | schema_name | kind | comment | cluster_by | rows | bytes | owner | retention_time | automatic_clustering | change_tracking | search_optimization | search_optimization_progress | search_optimization_bytes | is_external | enable_schema_evolution | owner_role_type | is_event | is_hybrid | is_iceberg | is_dynamic | is_immutable | is_interactive | row_timestamp | error_logging
+   2026-11-24 18:18:41.476000-08:00 | DIM_PRODUCTS | HW32 | ANALYTICS | TRANSIENT |  |  | 2805 | 224256 | ACCOUNTADMIN | 1 | OFF | OFF | OFF | None | None | N | N | ROLE | N | N | N | N | N | N | OFF | OFF
+   2026-11-22 20:27:53.698000-08:00 | DIM_PRODUCTS_BKP_20261122 | HW32 | ANALYTICS | TRANSIENT |  |  | 2678 | 217088 | ACCOUNTADMIN | 1 | OFF | OFF | OFF | None | None | N | N | ROLE | N | N | N | N | N | N | OFF | OFF
+   2026-11-22 21:30:05.818000-08:00 | DIM_PRODUCTS_BKP_20261123 | HW32 | ANALYTICS | TRANSIENT |  |  | 2678 | 217088 | ACCOUNTADMIN | 1 | OFF | OFF | OFF | None | None | N | N | ROLE | N | N | N | N | N | N | OFF | OFF
+   2026-11-24 01:21:16.559000-08:00 | PRICE_YOY | HW32 | ANALYTICS | TRANSIENT |  |  | 2551 | 47104 | ACCOUNTADMIN | 1 | OFF | OFF | OFF | None | None | N | N | ROLE | N | N | N | N | N | N | OFF | OFF
+   (4 rows)

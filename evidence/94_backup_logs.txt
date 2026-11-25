@@ -1,0 +1,41 @@
+dag=hw32_daily_backup run=manual__2026-11-24T08:36:33.309227+00:00 state=success start=2026-11-24 00:36:33 PST end=2026-11-24 00:37:49 PST
+  backup_database                                  success    try=1 SQLExecuteQueryOperator
+  backup_name                                      success    try=1 _PythonDecoratedOperator
+  prune_old_backups                                success    try=2 _PythonDecoratedOperator
+--- log dag=hw32_daily_backup run=manual__2026-11-24T08:36:33.309227+00:00 task=backup_name try=1 filter=/Returned/
+2026-11-24T08:36:55.519829Z info Done. Returned value was: HW32_BACKUP_20261124
+--- log dag=hw32_daily_backup run=manual__2026-11-24T08:36:33.309227+00:00 task=backup_database try=1 filter=/Executing/
+2026-11-24T08:36:33.787501Z info Executing: CREATE DATABASE IF NOT EXISTS None CLONE HW32
+2026-11-24T08:36:40.004777Z info Executing sync query request_id=5d84e183-8523-4aef-86f9-46ed666ee927
+2026-11-24T08:36:41.143874Z info Executing sync query request_id=3cb71ac3-c107-4076-813d-2ab7a2724077
+2026-11-24T08:36:45.805910Z info Executing sync query request_id=679145e9-c2bb-436e-a19d-71d1e904df09
+--- log dag=hw32_daily_backup run=manual__2026-11-24T08:36:33.309227+00:00 task=prune_old_backups try=1 filter=/dropped|kept|ERROR/
+dag=hw32_daily_backup run=manual__2026-11-24T08:38:39.118968+00:00 state=success start=2026-11-24 00:38:39 PST end=2026-11-24 00:38:45 PST
+  backup_name                                      success    try=1 _PythonDecoratedOperator
+  backup_database                                  success    try=1 SQLExecuteQueryOperator
+  prune_old_backups                                success    try=1 _PythonDecoratedOperator
+--- log dag=hw32_daily_backup run=manual__2026-11-24T08:38:39.118968+00:00 task=backup_name try=1 filter=/Returned/
+2026-11-24T08:38:40.135889Z info Done. Returned value was: HW32_BACKUP_20261124
+--- log dag=hw32_daily_backup run=manual__2026-11-24T08:38:39.118968+00:00 task=backup_database try=1 filter=/Executing/
+2026-11-24T08:38:41.184621Z info Executing: CREATE DATABASE IF NOT EXISTS HW32_BACKUP_20261124 CLONE HW32
+2026-11-24T08:38:41.828118Z info Executing sync query request_id=ae3b4571-cc5d-47fa-8d7e-752ba810dea2
+2026-11-24T08:38:42.033695Z info Executing sync query request_id=1f0cbddb-cb95-4aa5-a763-fad4df68cbf9
+2026-11-24T08:38:42.216389Z info Executing sync query request_id=9a12d351-7a53-48d4-963e-fc76ef116eda
+--- log dag=hw32_daily_backup run=manual__2026-11-24T08:38:39.118968+00:00 task=prune_old_backups try=1 filter=/dropped|kept|ERROR/
+2026-11-24T08:38:44.891491Z info backups kept (>= 20261118): ['HW32_BACKUP_20261124']
+dag=hw32_daily_backup run=manual__2026-11-24T22:10:23.303919+00:00 state=success start=2026-11-24 14:10:23 PST end=2026-11-24 14:10:29 PST
+  backup_name                                      success    try=1 _PythonDecoratedOperator
+  backup_database                                  success    try=1 SQLExecuteQueryOperator
+  prune_old_backups                                success    try=1 _PythonDecoratedOperator
+--- log dag=hw32_daily_backup run=manual__2026-11-24T22:10:23.303919+00:00 task=backup_name try=1 filter=/Returned/
+2026-11-24T22:10:24.170073Z info Done. Returned value was: HW32_BACKUP_20261124
+--- log dag=hw32_daily_backup run=manual__2026-11-24T22:10:23.303919+00:00 task=backup_database try=1 filter=/Executing/
+2026-11-24T22:10:25.099113Z info Executing: CREATE DATABASE IF NOT EXISTS HW32_BACKUP_20261124 CLONE HW32
+2026-11-24T22:10:25.685410Z info Executing sync query request_id=2584c84a-43d2-49cb-a474-32500d64647e
+2026-11-24T22:10:25.874321Z info Executing sync query request_id=e5fab114-bbf0-4c90-bd5c-cdf1209813d7
+2026-11-24T22:10:26.105579Z info Executing sync query request_id=9fdfbd42-7822-45cd-bebb-3cc971dd58ca
+--- log dag=hw32_daily_backup run=manual__2026-11-24T22:10:23.303919+00:00 task=prune_old_backups try=1 filter=/dropped|kept|ERROR/
+2026-11-24T22:10:29.043172Z info backups kept (>= 20261118): ['HW32_BACKUP_20261124']
+--- log dag=hw32_daily_backup run=manual__2026-11-24T08:36:33.309227+00:00 task=prune_old_backups try=2 filter=/dropped|kept|ERROR|failed/
+2026-11-24T08:37:48.736232Z info dropped HW32_BACKUP_20261116
+2026-11-24T08:37:49.018471Z info backups kept (>= 20261118): ['HW32_BACKUP_20261118', 'HW32_BACKUP_20261124']

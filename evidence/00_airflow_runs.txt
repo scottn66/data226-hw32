@@ -1,0 +1,32 @@
+manual__2026-11-25T02:18:06.417949+00:00  manual     success  start 2026-11-24 18:18:07 PST  end 2026-11-24 18:19:03 PST
+manual__2026-11-24T09:20:07.443146+00:00  manual     success  start 2026-11-24 01:20:08 PST  end 2026-11-24 01:20:56 PST
+manual__2026-11-24T08:39:34.052055+00:00  operator_triggered success  start 2026-11-24 00:39:34 PST  end 2026-11-24 00:40:47 PST
+manual__2026-11-24T08:30:57.257519+00:00  manual     success  start 2026-11-24 00:30:57 PST  end 2026-11-24 00:31:59 PST
+scheduled__2026-11-24T08:00:00+00:00  scheduled  success  start 2026-11-24 00:24:08 PST  end 2026-11-24 00:25:14 PST
+scheduled__2026-11-23T08:00:00+00:00  scheduled  failed   start 2026-11-23 15:06:25 PST  end 2026-11-23 15:08:40 PST
+manual__2026-11-23T03:40:11.886233+00:00  manual     success  start 2026-11-22 19:40:12 PST  end 2026-11-22 19:41:12 PST
+manual__2026-11-23T03:37:16.297200+00:00  manual     success  start 2026-11-22 19:37:16 PST  end 2026-11-22 19:38:14 PST
+
+manual__2026-11-24T08:29:21.242374+00:00  manual     success  start 2026-11-24 00:29:21 PST  end 2026-11-24 00:30:17 PST
+manual__2026-11-23T05:29:01.303225+00:00  manual     success  start 2026-11-22 21:29:01 PST  end 2026-11-22 21:29:19 PST
+manual__2026-11-23T04:36:15.959319+00:00  manual     success  start 2026-11-22 20:36:16 PST  end 2026-11-22 20:36:33 PST
+
+manual__2026-11-24T09:21:09.363737+00:00  manual     success  start 2026-11-24 01:21:09 PST  end 2026-11-24 01:21:29 PST
+manual__2026-11-24T08:28:32.196806+00:00  manual     success  start 2026-11-24 00:28:32 PST  end 2026-11-24 00:28:53 PST
+manual__2026-11-24T08:25:44.644902+00:00  manual     failed   start 2026-11-24 00:25:44 PST  end 2026-11-24 00:28:00 PST
+
+manual__2026-11-24T22:08:29.063686+00:00  manual     success  start 2026-11-24 14:08:30 PST  end 2026-11-24 14:08:54 PST
+manual__2026-11-24T08:32:17.356897+00:00  manual     success  start 2026-11-24 00:32:18 PST  end 2026-11-24 00:32:40 PST
+
+manual__2026-11-24T22:10:23.303919+00:00  manual     success  start 2026-11-24 14:10:23 PST  end 2026-11-24 14:10:29 PST
+manual__2026-11-24T08:38:39.118968+00:00  manual     success  start 2026-11-24 00:38:39 PST  end 2026-11-24 00:38:45 PST
+manual__2026-11-24T08:36:33.309227+00:00  manual     success  start 2026-11-24 00:36:33 PST  end 2026-11-24 00:37:49 PST
+manual__2026-11-24T08:33:42.190113+00:00  manual     failed   start 2026-11-24 00:33:42 PST  end 2026-11-24 00:35:47 PST
+scheduled__2026-11-24T08:00:00+00:00  scheduled  success  start 2026-11-24 00:32:59 PST  end 2026-11-24 00:33:08 PST
+scheduled__2026-11-23T08:00:00+00:00  scheduled  failed   start 2026-11-23 15:09:10 PST  end 2026-11-23 15:11:14 PST
+manual__2026-11-23T05:30:03.896637+00:00  manual     success  start 2026-11-22 21:30:04 PST  end 2026-11-22 21:30:12 PST
+manual__2026-11-23T04:37:28.339494+00:00  manual     success  start 2026-11-22 20:37:28 PST  end 2026-11-22 20:37:35 PST
+scheduled__2026-11-23T00:00:00+00:00  scheduled  success  start 2026-11-22 20:37:28 PST  end 2026-11-22 20:37:35 PST
+
+manual__2026-11-24T08:39:24.346007+00:00  manual     success  start 2026-11-24 00:39:24 PST  end 2026-11-24 00:41:04 PST
+

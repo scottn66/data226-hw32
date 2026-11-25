@@ -1,0 +1,3 @@
+# Open comments, read 2026-11-24 19:55 PT (browser, read-only). 14 open threads, no replies.
+# Resolved since iter/2: 7 of the 8 section-9 threads. Still open in section 9: "[Claude] A small table here helps the grader match the four sub-items ...".
+# Open: section 5 x2 (claimed-but-not-shown; placeholder/operators), section 7 x2 (two sentences; mid-run screenshot), section 8 x3, section 9 x1 (table), section 10 x3 (takeaways; numbers out of date; metering screenshot), section 11 x1, GenAI x1, Appendix x1.

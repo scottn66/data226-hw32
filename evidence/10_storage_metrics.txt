@@ -1,0 +1,10 @@
+# captured 2026-11-24 18:50:06 PST via Airflow connection snowflake_conn (read-only)
+
+>> SELECT table_catalog, table_schema, active_bytes, time_travel_bytes FROM HW32.INFORMATION_SCHEMA.TABLE_STORAGE_METRICS WHERE table_name = 'PRODUCTS_SNAPSHOT' AND table_dropped IS NULL AND schema_dropped IS NULL AND catalog_dropped IS NULL ORDER BY 1, 2
+   TABLE_CATALOG | TABLE_SCHEMA | ACTIVE_BYTES | TIME_TRAVEL_BYTES
+   HW32 | SNAPSHOTS | 1153024 | 1099264
+   HW32 | SNAPSHOTS_PRE_RESTORE_20261124_003926 | 1104896 | 0
+   HW32_BACKUP_20261124 | SNAPSHOTS | 0 | 0
+   HW32_DEV | SNAPSHOTS | 0 | 0
+   HW32_DEV | SNAPSHOTS_PRE_RESTORE_20261124_003926 | 0 | 0
+   (5 rows)

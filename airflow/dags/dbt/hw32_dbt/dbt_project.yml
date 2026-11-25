@@ -1,0 +1,21 @@
+name: 'hw32_dbt'
+version: '1.0.0'
+profile: 'hw32_dbt'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+vars:
+  # 9.1 feature flag. The dev DAG builds and tests the rating column in HW32_DEV with this on.
+  # Flip to true only after RAW.PRODUCT_RATINGS has been promoted to prod (done Nov 24, 2026).
+  enable_rating: true
+  # 9.2: set to true only by the year-end DAG, which first creates SNAPSHOTS.PRODUCTS_SNAPSHOT_FROZEN.
+  build_yoy: false

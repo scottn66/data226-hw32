@@ -1,0 +1,21 @@
+dag=hw32_restore run=manual__2026-11-24T08:39:24.346007+00:00 state=success start=2026-11-24 00:39:24 PST end=2026-11-24 00:41:04 PST
+  pick_backup                                      success    try=1 _PythonDecoratedOperator
+  restore_snapshots                                success    try=1 _PythonDecoratedOperator
+  rerun_pipeline                                   success    try=1 TriggerDagRunOperator
+--- log dag=hw32_restore run=manual__2026-11-24T08:39:24.346007+00:00 task=pick_backup try=1 filter=/restoring/
+2026-11-24T08:39:26.365800Z info restoring from HW32_BACKUP_20261124 (available: ['HW32_BACKUP_20261124'])
+--- log dag=hw32_restore run=manual__2026-11-24T08:39:24.346007+00:00 task=restore_snapshots try=1 filter=/restored|ERROR/
+2026-11-24T08:39:33.083447Z info restored 2678 snapshot rows from HW32_BACKUP_20261124; previous schema kept as SNAPSHOTS_PRE_RESTORE_20261124_003926
+dag=hw32_products_pipeline run=manual__2026-11-24T08:39:34.052055+00:00 state=success start=2026-11-24 00:39:34 PST end=2026-11-24 00:40:47 PST
+  extract                                          success    try=1 _PythonDecoratedOperator
+  load_staging                                     success    try=1 _PythonDecoratedOperator
+  dbt_transform.stg_products.run                   success    try=1 DbtRunLocalOperator
+  dbt_transform.stg_products.test                  success    try=1 DbtTestLocalOperator
+  dbt_transform.products_snapshot_snapshot         success    try=1 DbtSnapshotLocalOperator
+  dbt_transform.dim_products.run                   success    try=1 DbtRunLocalOperator
+  dbt_transform.dim_products.test                  success    try=1 DbtTestLocalOperator
+  dbt_transform.scd2_matches_snapshot_test         success    try=1 DbtTestLocalOperator
+  verify                                           success    try=1 _PythonDecoratedOperator
+  clone_dev_database                               success    try=1 SQLExecuteQueryOperator
+--- log dag=hw32_products_pipeline run=manual__2026-11-24T08:39:34.052055+00:00 task=verify try=1 filter=/dim rows/
+2026-11-24T08:40:38.640389Z info dim rows=2678 current=2551 products=2551 history=127

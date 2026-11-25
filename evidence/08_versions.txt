@@ -1,0 +1,16 @@
+# captured 2026-11-24 18:49:45 PST via Airflow connection snowflake_conn (read-only)
+
+>> SELECT version, change_type, COUNT(*) FROM HW32.ANALYTICS.DIM_PRODUCTS GROUP BY 1, 2 ORDER BY 1, 2
+   VERSION | CHANGE_TYPE | COUNT(*)
+   1 | initial | 2551
+   2 | price_change | 168
+   2 | title_change | 80
+   3 | price_change | 6
+   (4 rows)
+
+>> SELECT version, COUNT(*) FROM HW32.ANALYTICS.DIM_PRODUCTS GROUP BY 1 ORDER BY 1
+   VERSION | COUNT(*)
+   1 | 2551
+   2 | 248
+   3 | 6
+   (3 rows)

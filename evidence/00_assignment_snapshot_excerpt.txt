@@ -1,0 +1,21 @@
+# Excerpt of the HW 3.2 assignment text as Scott pasted it on Nov 23, 2026 (snapshot section only), saved 2026-11-24 20:08 PST
+dbt snapshot configuration:
+# dbt_project.yml
+snapshots:
+  product_catalog:
+    target_schema: snapshots
+    strategy: timestamp
+    updated_at: updated_at
+    unique_key: id
+-- snapshots/product_snapshot.sql
+{% snapshot product_snapshot %}
+    {{
+        config(
+          target_schema='snapshots',
+          strategy='timestamp',
+          unique_key='id',
+          updated_at='updated_at',
+        )
+    }}
+    SELECT * FROM {{ source('staging', 'products') }}
+{% endsnapshot %}

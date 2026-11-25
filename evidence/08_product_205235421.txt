@@ -1,0 +1,8 @@
+# captured 2026-11-24 18:49:47 PST via Airflow connection snowflake_conn (read-only)
+
+>> SELECT product_id, version, change_type, previous_price, price, valid_from, valid_to, is_current FROM HW32.ANALYTICS.DIM_PRODUCTS WHERE product_id = 205235421 ORDER BY version
+   PRODUCT_ID | VERSION | CHANGE_TYPE | PREVIOUS_PRICE | PRICE | VALID_FROM | VALID_TO | IS_CURRENT
+   205235421 | 1 | initial | None | 264.00 | 2026-11-23 02:43:58.171000 | 2026-11-23 03:40:46.952000 | False
+   205235421 | 2 | price_change | 264.00 | 232.31 | 2026-11-23 03:40:46.952000 | 2026-11-24 09:20:30.611000 | False
+   205235421 | 3 | price_change | 232.31 | 269.35 | 2026-11-24 09:20:30.611000 | 9999-12-31 00:00:00 | True
+   (3 rows)

@@ -1,0 +1,9 @@
+version: 2
+models:
+  - name: stg_products
+    description: Typed, cleaned view over the raw CSV load. One row per product.
+    columns:
+      - name: product_id
+        tests: [unique, not_null]
+      - name: price
+        tests: [not_null]

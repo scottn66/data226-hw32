@@ -1,0 +1,29 @@
+# batch 3, 2026-11-24 19:55 PST: failed runs that show platform limits (read-only log capture)
+dag=hw32_eoy_snapshot run=manual__2026-11-24T08:25:44.644902+00:00 state=failed start=2026-11-24 00:25:44 PST end=2026-11-24 00:28:00 PST
+  freeze_snapshot                                  failed     try=3 _PythonDecoratedOperator
+  dbt_price_yoy.price_yoy.run                      upstream_failed try=0 DbtRunLocalOperator
+  dbt_price_yoy.price_yoy.test                     upstream_failed try=0 DbtTestLocalOperator
+  summarize_yoy                                    upstream_failed try=0 SQLExecuteQueryOperator
+--- log dag=hw32_eoy_snapshot run=manual__2026-11-24T08:25:44.644902+00:00 task=freeze_snapshot try=1 filter=/Task failed|outside|retention|source/
+2026-11-24T08:25:45.268954Z warning failed to load region from IMDS err=failed to load IMDS session token: dispatch failure: io error: error sending request for url (http://169.254.169.254/latest/api/token): client error (Connect): tcp connect error: Connection refused (os error 111) (FailedToLoadToken(FailedToLoadToken { source: DispatchFailure(DispatchFailure { source: ConnectorError { kind: Io, source: reqwest::Error { kind: Request, url: "http://169.254.169.254/latest/api/token", source: hyper_util::client::legacy::Error(Connect, ConnectError("tcp connect error", 169.254.169.254:80, Os { code: 111, kind: ConnectionRefused, message: "Connection refused" })) }, connection: Unknown } }) }))
+2026-11-24T08:25:45.270068Z warning failed to load region from IMDS err=failed to load IMDS session token: dispatch failure: io error: error sending request for url (http://169.254.169.254/latest/api/token): client error (Connect): tcp connect error: Connection refused (os error 111) (FailedToLoadToken(FailedToLoadToken { source: DispatchFailure(DispatchFailure { source: ConnectorError { kind: Io, source: reqwest::Error { kind: Request, url: "http://169.254.169.254/latest/api/token", source: hyper_util::client::legacy::Error(Connect, ConnectError("tcp connect error", 169.254.169.254:80, Os { code: 111, kind: ConnectionRefused, message: "Connection refused" })) }, connection: Unknown } }) }))
+2026-11-24T08:25:45.911231Z info source HW32.SNAPSHOTS.PRODUCTS_SNAPSHOT kind=TRANSIENT retention=1 day(s)
+2026-11-24T08:25:47.873952Z error Task failed with exception | KeyError: 'n'
+--- log dag=hw32_eoy_snapshot run=manual__2026-11-24T08:25:44.644902+00:00 task=freeze_snapshot try=2 filter=/Task failed|outside|retention|source/
+2026-11-24T08:26:50.044969Z info source HW32.SNAPSHOTS.PRODUCTS_SNAPSHOT kind=TRANSIENT retention=1 day(s)
+2026-11-24T08:26:52.414575Z error Task failed with exception | KeyError: 'n'
+--- log dag=hw32_eoy_snapshot run=manual__2026-11-24T08:25:44.644902+00:00 task=freeze_snapshot try=3 filter=/Task failed|outside|retention|source/
+2026-11-24T08:27:54.762145Z info source HW32.SNAPSHOTS.PRODUCTS_SNAPSHOT kind=TRANSIENT retention=1 day(s)
+2026-11-24T08:27:57.089184Z error Task failed with exception | KeyError: 'n'
+dag=hw32_daily_backup run=manual__2026-11-24T08:33:42.190113+00:00 state=failed start=2026-11-24 00:33:42 PST end=2026-11-24 00:35:47 PST
+  backup_database                                  failed     try=3 SQLExecuteQueryOperator
+  prune_old_backups                                upstream_failed try=0 _PythonDecoratedOperator
+--- log dag=hw32_daily_backup run=manual__2026-11-24T08:33:42.190113+00:00 task=backup_database try=1 filter=/Task failed|ds_nodash|undefined|Executing/
+2026-11-24T08:33:43.127794Z error Exception rendering Jinja template for task 'backup_database', field 'sql'. Template: 'CREATE DATABASE IF NOT EXISTS HW32_BACKUP_{{ ds_nodash }} CLONE HW32' | UndefinedError: 'ds_nodash' is undefined
+2026-11-24T08:33:43.130179Z error Task failed with exception | UndefinedError: 'ds_nodash' is undefined
+--- log dag=hw32_daily_backup run=manual__2026-11-24T08:33:42.190113+00:00 task=backup_database try=2 filter=/Task failed|ds_nodash|undefined|Executing/
+2026-11-24T08:34:44.425580Z error Exception rendering Jinja template for task 'backup_database', field 'sql'. Template: 'CREATE DATABASE IF NOT EXISTS HW32_BACKUP_{{ ds_nodash }} CLONE HW32' | UndefinedError: 'ds_nodash' is undefined
+2026-11-24T08:34:44.426156Z error Task failed with exception | UndefinedError: 'ds_nodash' is undefined
+--- log dag=hw32_daily_backup run=manual__2026-11-24T08:33:42.190113+00:00 task=backup_database try=3 filter=/Task failed|ds_nodash|undefined|Executing/
+2026-11-24T08:35:45.279154Z error Exception rendering Jinja template for task 'backup_database', field 'sql'. Template: 'CREATE DATABASE IF NOT EXISTS HW32_BACKUP_{{ ds_nodash }} CLONE HW32' | UndefinedError: 'ds_nodash' is undefined
+2026-11-24T08:35:45.279922Z error Task failed with exception | UndefinedError: 'ds_nodash' is undefined

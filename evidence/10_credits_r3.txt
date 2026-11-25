@@ -1,0 +1,33 @@
+# captured 2026-11-24 19:55:53 PST via Airflow connection snowflake_conn (read-only)
+
+>> SELECT warehouse_name, ROUND(SUM(credits_used), 3) AS credits FROM SNOWFLAKE.ACCOUNT_USAGE.WAREHOUSE_METERING_HISTORY WHERE start_time >= '2026-11-19' GROUP BY 1 ORDER BY 2 DESC
+   WAREHOUSE_NAME | CREDITS
+   COMPUTE_WH | 1.262
+   HW32_WH | 0.889
+   CLOUD_SERVICES_ONLY | 0.002
+   (3 rows)
+
+>> SELECT warehouse_name, DATE(CONVERT_TIMEZONE('America/Los_Angeles', start_time)) AS day_pt, ROUND(SUM(credits_used), 3) AS credits FROM SNOWFLAKE.ACCOUNT_USAGE.WAREHOUSE_METERING_HISTORY WHERE start_time >= '2026-11-19' AND warehouse_name IN ('HW32_WH', 'COMPUTE_WH') GROUP BY 1, 2 ORDER BY 1, 2
+   WAREHOUSE_NAME | DAY_PT | CREDITS
+   COMPUTE_WH | 2026-11-19 | 0.242
+   COMPUTE_WH | 2026-11-20 | 0.435
+   COMPUTE_WH | 2026-11-22 | 0.399
+   COMPUTE_WH | 2026-11-24 | 0.186
+   HW32_WH | 2026-11-20 | 0.023
+   HW32_WH | 2026-11-22 | 0.187
+   HW32_WH | 2026-11-24 | 0.680
+   (7 rows)
+
+>> SELECT warehouse_name, COUNT(*) AS queries, ROUND(SUM(execution_time) / 1000 / 60, 1) AS exec_minutes FROM SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY WHERE start_time >= '2026-11-19' AND warehouse_name IN ('HW32_WH', 'COMPUTE_WH') GROUP BY 1 ORDER BY 1
+   WAREHOUSE_NAME | QUERIES | EXEC_MINUTES
+   COMPUTE_WH | 1670 | 1.5
+   HW32_WH | 742 | 2.5
+   (2 rows)
+
+>> SHOW WAREHOUSES LIKE '%WH'
+   name | state | type | size | min_cluster_count | max_cluster_count | started_clusters | running | queued | is_default | is_current | auto_suspend | auto_resume | available | provisioning | quiescing | other | created_on | resumed_on | updated_on | owner | comment | enable_query_acceleration | query_acceleration_max_scale_factor | resource_monitor | actives | pendings | failed | suspended | uuid | scaling_policy | owner_role_type | resource_constraint | generation | query_throughput_multiplier | max_query_performance_level | disabled_reasons | tables
+   COMPUTE_WH | SUSPENDED | STANDARD | X-Small | 1 | 1 | 0 | 0 | 0 | Y | N | 300 | true |  |  |  |  | 2026-11-19 20:35:40.467000-08:00 | 2026-11-24 18:37:48.242000-08:00 | 2026-11-24 18:37:48.243000-08:00 | ACCOUNTADMIN |  | true | 8 | null | 0 | 0 | 0 | 1 | 323392008 | STANDARD | ROLE | STANDARD_GEN_2 | 2 | None | None | None | None
+   HW32_WH | STARTED | STANDARD | X-Small | 1 | 1 | 1 | 0 | 0 | N | Y | 60 | true |  100 | 0 | 0 | 0 | 2026-11-20 00:56:32.684000-08:00 | 2026-11-24 19:55:56.485000-08:00 | 2026-11-24 19:55:56.485000-08:00 | ACCOUNTADMIN |  | true | 8 | null | 1 | 0 | 0 | 0 | 323392164 | STANDARD | ROLE | STANDARD_GEN_2 | 2 | None | None | None | None
+   SNOWFLAKE_LEARNING_WH | SUSPENDED | STANDARD | X-Small | 1 | 1 | 0 | 0 | 0 | N | N | 300 | true |  |  |  |  | 2026-11-19 20:35:41.786000-08:00 | 2026-11-19 20:35:41.786000-08:00 | 2026-11-19 20:35:41.799000-08:00 | ACCOUNTADMIN | Created by Snowflake during account provisioning | true | 8 | null | 0 | 0 | 0 | 1 | 323392088 | STANDARD | ROLE | STANDARD_GEN_2 | 2 | None | None | None | None
+   SYSTEM$STREAMLIT_NOTEBOOK_WH | SUSPENDED | STANDARD | X-Small | 1 | 10 | 0 | 0 | 0 | N | N | 60 | true |  |  |  |  | 2026-11-19 20:35:39.006000-08:00 | 2026-11-19 20:35:39.021000-08:00 | 2026-11-19 20:35:39.045000-08:00 | ACCOUNTADMIN |  | true | 8 | null | 0 | 0 | 0 | 1 | 323392004 | STANDARD | ROLE | STANDARD_GEN_2 | 2 | None | None | None | None
+   (4 rows)

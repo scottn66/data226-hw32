@@ -1,0 +1,19 @@
+# locked_diff iter/1/doc.txt -> iter/2/doc.txt (patch iter/1/report_patch.md)
+LOCKED (someone else's edit): * Project structure. Airflow runs the dbt project from airflow/dags/dbt/hw32_dbt. hw32/hw32_dbt is an identical copy for local runs.
+from-patch: hw32_dbt/
+from-patch: dbt_project.yml vars: enable_rating (9.1), build_yoy (9.2)
+from-patch: models/staging/ sources.yml, stg_products.sql (view), schema.yml
+from-patch: models/marts/ dim_products.sql (SCD2 table), schema.yml
+from-patch: models/history/ price_yoy.sql, built only when build_yoy is true (9.2)
+from-patch: models/prototype/ price_bands.sql, built only with the proto target (9.3)
+from-patch: snapshots/ products_snapshot.sql
+from-patch: tests/ one_current_row_per_product, no_overlapping_validity,
+from-patch: scd2_matches_snapshot, rating_in_range
+from-patch: * It trims titles, casts price to number(10,2), and strips the trailing ".0" that the CSV export left on sku and gtin13. Every column is read from the raw landing table through source('raw', 'stg_products_raw') (evidence/06_dbt_project_tree
+from-patch: * All 12 tests pass in the Airflow run of Nov 24, 6:18 PM PT. Cosmos runs each model's tests as a separate task, so the results come from three task logs (evidence/06_cosmos_dbt_logs_rerun_0618pm.txt):
+from-patch: * dbt_transform.stg_products.test Done. PASS=3 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=3
+from-patch: * dbt_transform.dim_products.test Done. PASS=8 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=8
+from-patch: * dbt_transform.scd2_matches_snapshot_test Done. PASS=1 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=1
+from-patch: * In the same run, the snapshot task logged "OK snapshotted SNAPSHOTS.products_snapshot [SUCCESS 0]". The source file was the same as in run 3, so the snapshot recorded no new versions, and verify still reported history=254 (evidence/08_ver
+from-patch: * Screenshot 02: Airflow, run of Nov 24 6:18 PM PT, task dbt_transform.dim_products.test (DbtTestLocalOperator): 8 of 8 tests PASS.
+LOCKED (someone else's edit): 7. dbt Operator in Airflow (rubric item 7)

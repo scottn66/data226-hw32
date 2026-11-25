@@ -1,0 +1,3 @@
+# Open comments, read 2026-11-24 19:20 PT (browser, read-only DOM read). 22 open threads, no replies.
+# Change since iter/1/comments.txt: #3 '[Claude] Out of date: 8 tests then, 12 now' is gone (resolved or deleted by Scott after pasting the round-1 patch).
+# The remaining 22 are iter/1 #1, #2, #4-#23 in the same order; texts unchanged.

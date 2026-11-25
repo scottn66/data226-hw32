@@ -1,0 +1,11 @@
+# batch 2, 2026-11-24 19:20 PST: read-only log capture
+--- log dag=hw32_prototype run=manual__2026-11-24T22:08:29.063686+00:00 task=dbt_prototype.price_bands.run try=1 filter=/OK created|Done\.|PASS|target=/
+2026-11-24T22:08:40.363318Z info 22:08:40  Concurrency: 4 threads (target='proto')
+2026-11-24T22:08:43.945602Z info 22:08:43  1 of 1 OK created sql table model PROTOTYPE.price_bands ........................ [SUCCESS 1 in 1.71s]
+2026-11-24T22:08:44.492490Z info 22:08:44  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=1
+--- log dag=hw32_prototype run=manual__2026-11-24T22:08:29.063686+00:00 task=dbt_prototype.price_bands.test try=1 filter=/OK created|Done\.|PASS|target=/
+2026-11-24T22:08:46.791893Z info 22:08:46  Concurrency: 4 threads (target='proto')
+2026-11-24T22:08:48.186090Z info 22:08:48  2 of 3 PASS not_null_price_bands_products ...................................... [PASS in 0.41s]
+2026-11-24T22:08:48.219787Z info 22:08:48  1 of 3 PASS not_null_price_bands_price_band .................................... [PASS in 0.45s]
+2026-11-24T22:08:48.569542Z info 22:08:48  3 of 3 PASS unique_price_bands_price_band ...................................... [PASS in 0.79s]
+2026-11-24T22:08:49.374016Z info 22:08:49  Done. PASS=3 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=3

@@ -1,0 +1,12 @@
+version: 2
+models:
+  - name: price_yoy
+    description: 9.2 year-over-year price comparison against the frozen year-end catalog.
+    columns:
+      - name: product_id
+        tests: [unique, not_null]
+      - name: status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['added', 'removed', 'repriced', 'retitled', 'unchanged']

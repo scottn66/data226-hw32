@@ -1,0 +1,60 @@
+# captured 2026-11-24 18:49:27 PST
+## Airflow image (docker exec airflow_6c8d47-scheduler-1)
+3.4.0+astro.1
+Python 3.14.10
+apache-airflow                           3.4.0+astro.1
+apache-airflow-providers-common-sql      3.0.0
+apache-airflow-providers-snowflake       6.21.0
+astronomer-cosmos                        1.16.0
+snowflake-connector-python               5.2.0
+-- dbt_venv:
+Python 3.12.16
+Core:
+  - installed: 1.10.23
+  - latest:    1.12.7  - Update available!
+
+  Your version of dbt-core is out of date!
+  You can find instructions for upgrading here:
+  https://docs.getdbt.com/docs/installation
+
+Plugins:
+  - snowflake: 1.10.8 - Update available!
+
+  At least one plugin is out of date with dbt-core.
+  You can find instructions for upgrading here:
+  https://docs.getdbt.com/docs/installation
+
+
+## Airflow API version (http://localhost:8080 and http://airflow.localhost:6563)
+{"version":"3.4.0+astro.1","git_version":".dev0+8af626dc19cae0f27d35eaa92d1bb03b83ee536f.dirty"}
+{"version":"3.4.0+astro.1","git_version":".dev0+8af626dc19cae0f27d35eaa92d1bb03b83ee536f.dirty"}
+## Mac dbt (hw32/.venv)
+Python 3.12.13
+Core:
+  - installed: 1.10.23
+  - latest:    1.12.7  - Update available!
+
+  Your version of dbt-core is out of date!
+  You can find instructions for upgrading here:
+  https://docs.getdbt.com/docs/installation
+
+Plugins:
+  - snowflake: 1.10.8 - Update available!
+
+  At least one plugin is out of date with dbt-core.
+  You can find instructions for upgrading here:
+  https://docs.getdbt.com/docs/installation
+
+
+02:49:31  [WARNING]: This version of dbt is deprecated and no longer receives regular patches, including for known bugs. Please upgrade to a newer supported version of dbt for new projects: https://docs.getdbt.com/docs/dbt-versions?utm_source=dbt-cli
+# captured 2026-11-24 18:49:31 PST via Airflow connection snowflake_conn (read-only)
+
+>> SELECT CURRENT_VERSION()
+   CURRENT_VERSION()
+   10.42.104
+   (1 rows)
+
+>> SHOW WAREHOUSES LIKE 'HW32_WH'
+   name | state | type | size | min_cluster_count | max_cluster_count | started_clusters | running | queued | is_default | is_current | auto_suspend | auto_resume | available | provisioning | quiescing | other | created_on | resumed_on | updated_on | owner | comment | enable_query_acceleration | query_acceleration_max_scale_factor | resource_monitor | actives | pendings | failed | suspended | uuid | scaling_policy | owner_role_type | resource_constraint | generation | query_throughput_multiplier | max_query_performance_level | disabled_reasons | tables
+   HW32_WH | STARTED | STANDARD | X-Small | 1 | 1 | 1 | 0 | 0 | N | Y | 60 | true |  100 | 0 | 0 | 0 | 2026-11-20 00:56:32.684000-08:00 | 2026-11-24 18:48:11.080000-08:00 | 2026-11-24 18:48:11.080000-08:00 | ACCOUNTADMIN |  | true | 8 | null | 1 | 0 | 0 | 0 | 323392164 | STANDARD | ROLE | STANDARD_GEN_2 | 2 | None | None | None | None
+   (1 rows)

@@ -1,0 +1,70 @@
+# dbt project tree as Airflow uses it: airflow/dags/dbt/hw32_dbt (identical to hw32/hw32_dbt; see 06_dbt_nodes.txt). Captured 2026-11-24 19:00 PST. Empty template folders and build output (target/, logs/) omitted.
+hw32_dbt/dbt_project.yml
+hw32_dbt/models/history/price_yoy.sql
+hw32_dbt/models/history/schema.yml
+hw32_dbt/models/marts/dim_products.sql
+hw32_dbt/models/marts/schema.yml
+hw32_dbt/models/prototype/price_bands.sql
+hw32_dbt/models/prototype/schema.yml
+hw32_dbt/models/staging/schema.yml
+hw32_dbt/models/staging/sources.yml
+hw32_dbt/models/staging/stg_products.sql
+hw32_dbt/snapshots/products_snapshot.sql
+hw32_dbt/tests/no_overlapping_validity.sql
+hw32_dbt/tests/one_current_row_per_product.sql
+hw32_dbt/tests/rating_in_range.sql
+hw32_dbt/tests/scd2_matches_snapshot.sql
+
+## dbt_project.yml
+name: 'hw32_dbt'
+version: '1.0.0'
+profile: 'hw32_dbt'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+vars:
+  # 9.1 feature flag. The dev DAG builds and tests the rating column in HW32_DEV with this on.
+  # Flip to true only after RAW.PRODUCT_RATINGS has been promoted to prod (done Nov 24, 2026).
+  enable_rating: true
+  # 9.2: set to true only by the year-end DAG, which first creates SNAPSHOTS.PRODUCTS_SNAPSHOT_FROZEN.
+  build_yoy: false
+
+## models/staging/stg_products.sql
+{{ config(materialized='view') }}
+select
+    product_id,
+    trim(title)                              as title,
+    brand,
+    price::number(10,2)                      as price,
+    currency,
+    availability,
+    regexp_replace(sku, '\\.0$', '')         as sku,
+    regexp_replace(gtin13, '\\.0$', '')      as gtin13,
+    url,
+    description,
+    scraped_at
+from {{ source('raw', 'stg_products_raw') }}
+
+## snapshots/products_snapshot.sql
+{% snapshot products_snapshot %}
+{{ config(
+    target_schema='SNAPSHOTS',
+    unique_key='product_id',
+    strategy='check',
+    check_cols=['title', 'price', 'availability', 'brand']
+) }}
+select * from {{ ref('stg_products') }}
+{% endsnapshot %}
+
+## dbt targets (from evidence/src/dags__hw32_common.py.txt; profiles.yml itself not copied): prod -> HW32, dev -> HW32_DEV clone, proto -> HW32.PROTOTYPE
+## raw sku in original.csv: 2407 non-empty, 2407 end with '.0' (e.g. 1004455437.0)
+## raw gtin13 in original.csv: 2170 non-empty, 2170 end with '.0' (e.g. 886859468396.0)

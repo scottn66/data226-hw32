@@ -1,0 +1,9 @@
+version: 2
+models:
+  - name: price_bands
+    description: 9.3 prototype, price bands with repricing rates. Exists only in HW32.PROTOTYPE.
+    columns:
+      - name: price_band
+        tests: [unique, not_null]
+      - name: products
+        tests: [not_null]

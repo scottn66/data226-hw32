@@ -1,0 +1,13 @@
+# captured 2026-11-24 18:49:50 PST via Airflow connection snowflake_conn (read-only)
+
+>> SELECT dbt_valid_from, CONVERT_TIMEZONE('UTC', 'America/Los_Angeles', dbt_valid_from) AS valid_from_pt, COUNT(*) AS rows_ FROM HW32.SNAPSHOTS.PRODUCTS_SNAPSHOT GROUP BY 1, 2 ORDER BY 1
+   DBT_VALID_FROM | VALID_FROM_PT | ROWS_
+   2026-11-23 02:43:58.171000 | 2026-11-22 18:43:58.171000 | 2551
+   2026-11-23 03:40:46.952000 | 2026-11-22 19:40:46.952000 | 127
+   2026-11-24 09:20:30.611000 | 2026-11-24 01:20:30.611000 | 127
+   (3 rows)
+
+>> SELECT COUNT(*) AS snapshot_rows, COUNT_IF(dbt_valid_to IS NULL) AS current_rows FROM HW32.SNAPSHOTS.PRODUCTS_SNAPSHOT
+   SNAPSHOT_ROWS | CURRENT_ROWS
+   2805 | 2551
+   (1 rows)

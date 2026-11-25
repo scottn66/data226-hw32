@@ -1,0 +1,48 @@
+--- log dag=hw32_products_pipeline run=manual__2026-11-25T02:18:06.417949+00:00 task=dbt_transform.stg_products.run try=1 filter=/START|PASS|FAIL|ERROR=|Done\.|OK created|OK snapshotted|SUCCESS|Finished running/
+2026-11-25T02:18:22.979946Z info 02:18:22  1 of 1 START sql view model ANALYTICS.stg_products ............................. [RUN]
+2026-11-25T02:18:23.383746Z info 02:18:23  1 of 1 OK created sql view model ANALYTICS.stg_products ........................ [SUCCESS 1 in 0.40s]
+2026-11-25T02:18:23.870696Z info 02:18:23  Finished running 1 view model in 0 hours 0 minutes and 3.07 seconds (3.07s).
+2026-11-25T02:18:23.902677Z info 02:18:23  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=1
+--- log dag=hw32_products_pipeline run=manual__2026-11-25T02:18:06.417949+00:00 task=dbt_transform.stg_products.test try=1 filter=/START|PASS|FAIL|ERROR=|Done\.|OK created|OK snapshotted|SUCCESS|Finished running/
+2026-11-25T02:18:27.602547Z info 02:18:27  1 of 3 START test not_null_stg_products_price .................................. [RUN]
+2026-11-25T02:18:27.603325Z info 02:18:27  2 of 3 START test not_null_stg_products_product_id ............................. [RUN]
+2026-11-25T02:18:27.603695Z info 02:18:27  3 of 3 START test unique_stg_products_product_id ............................... [RUN]
+2026-11-25T02:18:28.086088Z info 02:18:28  2 of 3 PASS not_null_stg_products_product_id ................................... [PASS in 0.48s]
+2026-11-25T02:18:28.377775Z info 02:18:28  1 of 3 PASS not_null_stg_products_price ........................................ [PASS in 0.77s]
+2026-11-25T02:18:28.382141Z info 02:18:28  3 of 3 PASS unique_stg_products_product_id ..................................... [PASS in 0.78s]
+2026-11-25T02:18:29.074918Z info 02:18:29  Finished running 3 data tests in 0 hours 0 minutes and 2.92 seconds (2.92s).
+2026-11-25T02:18:29.106860Z info 02:18:29  Done. PASS=3 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=3
+--- log dag=hw32_products_pipeline run=manual__2026-11-25T02:18:06.417949+00:00 task=dbt_transform.products_snapshot_snapshot try=1 filter=/START|PASS|FAIL|ERROR=|Done\.|OK created|OK snapshotted|SUCCESS|Finished running/
+2026-11-25T02:18:32.953000Z info 02:18:32  1 of 1 START snapshot SNAPSHOTS.products_snapshot .............................. [RUN]
+2026-11-25T02:18:38.210963Z info 02:18:38  1 of 1 OK snapshotted SNAPSHOTS.products_snapshot .............................. [SUCCESS 0 in 5.26s]
+2026-11-25T02:18:38.655265Z info 02:18:38  Finished running 1 snapshot in 0 hours 0 minutes and 7.54 seconds (7.54s).
+2026-11-25T02:18:38.690442Z info 02:18:38  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=1
+--- log dag=hw32_products_pipeline run=manual__2026-11-25T02:18:06.417949+00:00 task=dbt_transform.dim_products.run try=1 filter=/START|PASS|FAIL|ERROR=|Done\.|OK created|OK snapshotted|SUCCESS|Finished running/
+2026-11-25T02:18:41.416571Z info 02:18:41  1 of 1 START sql table model ANALYTICS.dim_products ............................ [RUN]
+2026-11-25T02:18:44.040276Z info 02:18:44  1 of 1 OK created sql table model ANALYTICS.dim_products ....................... [SUCCESS 1 in 2.62s]
+2026-11-25T02:18:44.531159Z info 02:18:44  Finished running 1 table model in 0 hours 0 minutes and 4.40 seconds (4.40s).
+2026-11-25T02:18:44.566085Z info 02:18:44  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=1
+--- log dag=hw32_products_pipeline run=manual__2026-11-25T02:18:06.417949+00:00 task=dbt_transform.dim_products.test try=1 filter=/START|PASS|FAIL|ERROR=|Done\.|OK created|OK snapshotted|SUCCESS|Finished running/
+2026-11-25T02:18:46.955374Z info 02:18:46  1 of 8 START test accepted_values_dim_products_change_type__initial__price_change__title_change__other_change  [RUN]
+2026-11-25T02:18:46.956327Z info 02:18:46  2 of 8 START test no_overlapping_validity ...................................... [RUN]
+2026-11-25T02:18:46.956669Z info 02:18:46  3 of 8 START test not_null_dim_products_product_id ............................. [RUN]
+2026-11-25T02:18:46.957024Z info 02:18:46  4 of 8 START test not_null_dim_products_product_sk ............................. [RUN]
+2026-11-25T02:18:47.380332Z info 02:18:47  1 of 8 PASS accepted_values_dim_products_change_type__initial__price_change__title_change__other_change  [PASS in 0.42s]
+2026-11-25T02:18:47.381182Z info 02:18:47  5 of 8 START test not_null_dim_products_version ................................ [RUN]
+2026-11-25T02:18:47.400850Z info 02:18:47  2 of 8 PASS no_overlapping_validity ............................................ [PASS in 0.44s]
+2026-11-25T02:18:47.401532Z info 02:18:47  6 of 8 START test one_current_row_per_product .................................. [RUN]
+2026-11-25T02:18:47.633313Z info 02:18:47  5 of 8 PASS not_null_dim_products_version ...................................... [PASS in 0.25s]
+2026-11-25T02:18:47.634988Z info 02:18:47  4 of 8 PASS not_null_dim_products_product_sk ................................... [PASS in 0.68s]
+2026-11-25T02:18:47.636953Z info 02:18:47  7 of 8 START test rating_in_range .............................................. [RUN]
+2026-11-25T02:18:47.637258Z info 02:18:47  8 of 8 START test unique_dim_products_product_sk ............................... [RUN]
+2026-11-25T02:18:47.658987Z info 02:18:47  6 of 8 PASS one_current_row_per_product ........................................ [PASS in 0.26s]
+2026-11-25T02:18:47.820034Z info 02:18:47  8 of 8 PASS unique_dim_products_product_sk ..................................... [PASS in 0.18s]
+2026-11-25T02:18:47.899786Z info 02:18:47  7 of 8 PASS rating_in_range .................................................... [PASS in 0.26s]
+2026-11-25T02:18:48.035409Z info 02:18:48  3 of 8 PASS not_null_dim_products_product_id ................................... [PASS in 1.08s]
+2026-11-25T02:18:48.911639Z info 02:18:48  Finished running 8 data tests in 0 hours 0 minutes and 2.69 seconds (2.69s).
+2026-11-25T02:18:48.944679Z info 02:18:48  Done. PASS=8 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=8
+--- log dag=hw32_products_pipeline run=manual__2026-11-25T02:18:06.417949+00:00 task=dbt_transform.scd2_matches_snapshot_test try=1 filter=/START|PASS|FAIL|ERROR=|Done\.|OK created|OK snapshotted|SUCCESS|Finished running/
+2026-11-25T02:18:52.093071Z info 02:18:52  1 of 1 START test scd2_matches_snapshot ........................................ [RUN]
+2026-11-25T02:18:52.687073Z info 02:18:52  1 of 1 PASS scd2_matches_snapshot .............................................. [PASS in 0.59s]
+2026-11-25T02:18:53.118583Z info 02:18:53  Finished running 1 test in 0 hours 0 minutes and 1.90 seconds (1.90s).
+2026-11-25T02:18:53.148213Z info 02:18:53  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=1

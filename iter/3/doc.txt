@@ -1,0 +1,182 @@
+﻿DATA 226 Group HW 3.2: dbt + Airflow + Snowflake Pipeline
+Group 9 | Author: Scott Nelson | Due Wed Nov 25, 2026
+1. Overview
+* The goal of this assignment demonstrates Extract, Load, Transform pipeline using Home Depot product data into Snowflake and running data transformations. ELT pipeline that loads Home Depot product data into Snowflake, transforms it with dbt engine (SCD Type 2) and orchestrating it with Apache Airflow.
+* Architecture diagram: CSV (local) → extract (validate, PUT) → stage HW32.RAW.PRODUCTS_STAGE → load_staging (COPY in one transaction) → RAW.STG_PRODUCTS_RAW → stg_products (view) → products_snapshot (SNAPSHOTS) → dim_products (ANALYTICS, joined with RAW.PRODUCT_RATINGS) → verify → clone_dev_database (HW32_DEV).
+* Blue dashed = a task writes or runs, gray dashed = a task only reads, solid = data flow.
+  
+
+2. Environment Setup (rubric item 1)
+* Snowflake trial, warehouse HW32_WH (X-Small, auto-suspend 60s)
+* dbt-core 1.10 / dbt-snowflake 1.10 (Python 3.12), key-pair auth
+* Airflow 3.4.0 (Astro Runtime 3.4-1, Python 3.14), Cosmos 1.16.0, apache-airflow-providers-snowflake 6.21.0, common-sql 3.0.0, snowflake-connector-python 5.2.0; dbt-core 1.10.23 with dbt-snowflake 1.10.8, each in its own Python 3.12 virtualenv (one in the Airflow image, one on Mac, which screenshot 01 shows below). One Airflow connection, snowflake_conn, defined in airflow/.env with key-pair auth. Connector 5.x also needs authenticator SNOWFLAKE_JWT; without it every task failed at midnight on Nov 24.
+* [Screenshot 01_dbt_debug_connection_ok.png]  
+3. Dataset (rubric item 2)
+   * Home Depot product data (Kaggle), 2,551 rows, 14 columns
+   * Natural key: product_id (unique); notes: sku has nulls and duplicates (144 null, 373 repeat SKU)
+   * Location: local: airflow/include/data/home_depot_data_1_2021_12.csv, which the extract task uploads to Snowflake's internal stage. Transformed datasets per run include: original.csv = run 1, run2.csv = run 2, the current file = run 3
+4. Database, Schema, Staging (rubric item 3)
+   * HW32 with RAW, ANALYTICS, SNAPSHOTS; file format CSV_FMT, stage PRODUCTS_STAGE
+   * DDL snippet + row count 2,551: The landing table is the one Snowsight's load wizard created on Nov 20 (14 columns, price as FLOAT), so the file loads column for column and all type conversion happens in stg_products.  
+5. Airflow DAG (rubric item 4)
+      * Tasks: extract → load_staging → dbt_transform → verify → clone_dev_database
+      * Error handling: retries=2, 1-min delay, on_failure_callback, transactional load with row-count check and rollback
+      * Daily at midnight Pacific (catchup off): extract validates the CSV and PUTs it to the internal stage; load_staging runs DELETE, COPY (ON_ERROR='ABORT_STATEMENT'), and a row-count check in one transaction and rolls back on any error; Cosmos dbt_transform builds and tests the models; verify fails the run unless every product has exactly one current row (run 3: dim rows=2805, current=2551, products=2551, history=254); clone_dev_database is the daily 9.1 zero-copy dev clone.
+      * Code snippet: hw32_products_pipeline.py (key parts)
+
+
+@dag(start_date=pendulum.datetime(2026, 11, 1, tz=TZ), schedule="@daily", catchup=False,
+     tags=["hw32"],
+     default_args={"retries": 2, "retry_delay": timedelta(minutes=1),
+                   "on_failure_callback": notify_failure})
+def hw32_products_pipeline():
+    ...
+    @task
+    def load_staging(expected: int) -> int:
+        """Replace the RAW table in one transaction; roll back on any error or row-count mismatch."""
+        with SnowflakeHook(snowflake_conn_id=SNOWFLAKE_CONN).get_conn() as conn:
+            cur = conn.cursor()
+            cur.execute("BEGIN")
+            try:
+                cur.execute(f"DELETE FROM {RAW_TABLE}")
+                cur.execute(f"COPY INTO {RAW_TABLE} FROM @{STAGE} FILES=('{STAGED_FILE}') "
+                            f"FILE_FORMAT=(FORMAT_NAME={FILE_FORMAT}) "
+                            "FORCE=TRUE ON_ERROR='ABORT_STATEMENT'")
+                loaded = cur.execute(f"SELECT COUNT(*) FROM {RAW_TABLE}").fetchone()[0]
+                if loaded != expected:
+                    raise ValueError(f"loaded {loaded} rows, expected {expected}")
+            except Exception:
+                cur.execute("ROLLBACK")
+                raise
+            cur.execute("COMMIT")
+        logging.info("staging rows: %s", loaded)
+        return loaded
+
+
+    dbt_transform = dbt_group("dbt_transform")
+    ...
+    load_staging(extract()) >> dbt_transform >> verify() >> clone_dev_database
+
+
+
+      * [Screenshot 04_airflow_dbt_task_group_success.png]
+  
+
+6. dbt Models, SCD2, Tests (rubric items 5–6)
+      * Project structure. Airflow runs the dbt project from airflow/dags/dbt/hw32_dbt. hw32/hw32_dbt is an identical copy for local runs.
+hw32_dbt/
+  dbt_project.yml        vars: enable_rating (9.1), build_yoy (9.2)
+  models/staging/        sources.yml, stg_products.sql (view), schema.yml
+  models/marts/          dim_products.sql (SCD2 table), schema.yml
+  models/history/        price_yoy.sql, built only when build_yoy is true (9.2)
+  models/prototype/      price_bands.sql, built only with the proto target (9.3)
+  snapshots/             products_snapshot.sql
+  tests/                 one_current_row_per_product, no_overlapping_validity,
+                         scd2_matches_snapshot, rating_in_range
+
+
+      * stg_products (view): type casting and cleanup
+      *  It trims titles, casts price to number(10,2), and strips the trailing ".0" that the CSV export left on sku and gtin13. Every column is read from the raw landing table through source('raw', 'stg_products_raw') (evidence/06_dbt_project_tree.txt).
+      * products_snapshot: check strategy on title, price, availability, brand
+      * the snapshot only records that something changed; dim_products builds the SCD2 dimension with window functions (version via ROW_NUMBER, previous_price / previous_title via LAG, valid_to via LEAD or 9999-12-31, is_current, change_type, and rating). scd2_matches_snapshot checks those windows against dbt_valid_to.
+      * models/marts/dim_products.sql
+      * 12 tests in the main build. Generic (schema.yml): stg_products.product_id unique and not_null; stg_products.price not_null; dim_products.product_sk unique and not_null; dim_products.product_id and version not_null; change_type accepted_values. Singular (tests/): one_current_row_per_product, no_overlapping_validity, scd2_matches_snapshot, rating_in_range. price_yoy and price_bands have their own tests, run only in their DAGs.
+      * All 12 tests pass in the Airflow run of Nov 24, 6:18 PM PT. Cosmos runs each model's tests as a separate task, so the results come from three task logs (evidence/06_cosmos_dbt_logs_rerun_0618pm.txt):
+      * dbt_transform.stg_products.test           Done. PASS=3 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=3
+      * dbt_transform.dim_products.test           Done. PASS=8 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=8
+      * dbt_transform.scd2_matches_snapshot_test  Done. PASS=1 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=1
+      * In the same run, the snapshot task logged "OK snapshotted SNAPSHOTS.products_snapshot [SUCCESS 0]". The source file was the same as in run 3, so the snapshot recorded no new versions, and verify still reported history=254 (evidence/08_verify_logs.txt).
+
+
+windowed as (
+    select
+        *,
+        row_number()     over (partition by product_id order by valid_from) as version,
+        lag(price)       over (partition by product_id order by valid_from) as previous_price,
+        lag(title)       over (partition by product_id order by valid_from) as previous_title,
+        lead(valid_from) over (partition by product_id order by valid_from) as next_valid_from
+    from versions
+)
+-- valid_to = coalesce(next_valid_from, '9999-12-31'), is_current = (next_valid_from is null)
+
+
+
+      * Screenshot 02: Airflow, run of Nov 24 6:18 PM PT, task dbt_transform.dim_products.test (DbtTestLocalOperator): 8 of 8 tests PASS.
+  
+
+
+
+7. dbt Operator in Airflow (rubric item 7)
+      * Cosmos DbtTaskGroup: run/test/snapshot as separate tasks
+      * [Screenshot 03_airflow_cosmos_operators_task_list.png]
+      * Cosmos is used instead of a single BashOperator dbt run so each dbt node is its own Airflow task, with its own retries and log. scd2_matches_snapshot reads two models, so the DAG sets should_detach_multiple_parents_tests=True in hw32_common.py and the test runs after both parents, not against a stale dim_products.
+  
+
+8. Run, Verify, Change and Re-run (rubric item 8)
+      * Run 1: dim rows 2551, current 2551
+      * mutate_source.py changes 5% of rows (price ±20% or title edit)
+      * Run 2: dim rows 2678, current 2551, history 127
+      * [Screenshots 05_airflow_run1_all_green_verify.png, 06_airflow_run2_after_mutation_history127.png, 07_scd2_dim_products_two_versions.png]
+      *       9. Zero-Copy Cloning (rubric item 9)
+         * Five DAGs and one task of the daily pipeline cover 9.1–9.4, and every clone is zero-copy (CREATE … CLONE): 9.1 clone_dev_database (the last task of the daily pipeline) and hw32_dev_clone_rating; 9.2 hw32_eoy_snapshot; 9.3 hw32_prototype; 9.4 hw32_daily_backup and hw32_restore (evidence/src/).
+9.1 Dev environment
+         * Daily clone: the pipeline's last task, clone_dev_database, runs CREATE OR REPLACE DATABASE HW32_DEV CLONE HW32 every day at midnight Pacific. It did so in the scheduled run of Nov 24 and again in the 6:18 PM run (evidence/91_dev_clone_dbt_logs.txt).
+         * New feature, tested in dev: hw32_dev_clone_rating (manual) clones prod to HW32_DEV and lands a ratings table only in HW32_DEV.RAW.PRODUCT_RATINGS. It then runs the dbt models with the dev target and enable_rating=true, so dim_products gains a rating column in the clone only. The Kaggle data has no ratings, so they are simulated: 1.0–5.0, derived from a hash of product_id, the same on every run (evidence/src/dags__hw32_dev_clone_rating.py.txt).
+         * Checks before promotion, run of Nov 24 12:29 AM (evidence/91_dev_clone_dbt_logs.txt, evidence/91_dev_clone_logs.txt):
+dbt_dev.dim_products.test  (target='dev')  7 of 8 PASS rating_in_range; Done. PASS=8 ... TOTAL=8
+check_dev_feature          Record: (True, True, True)
+check_prod_untouched       prod DIM_PRODUCTS fingerprint before=2728168932473494028 after=2728168932473494028
+promote_ratings_to_prod    CREATE OR REPLACE TABLE HW32.RAW.PRODUCT_RATINGS CLONE HW32_DEV.RAW.PRODUCT_RATINGS
+         * Applied in prod: after the promotion, enable_rating was set to true in dbt_project.yml, so the daily pipeline now builds the rating column in prod too. All 2,551 current products have a rating, and the average is 2.99 (evidence/91_dev_clone_untouched.txt, evidence/src/dbt_dbt_project.yml.txt).
+9.2 Point-in-time clone
+         * hw32_eoy_snapshot runs at midnight on Jan 1, Pacific time (schedule 0 0 1 1 *). Its tasks: ◦ freeze_snapshot clones HW32.SNAPSHOTS.PRODUCTS_SNAPSHOT AT(TIMESTAMP => the year boundary) into PRODUCTS_SNAPSHOT_EOY_<year>, and points the view PRODUCTS_SNAPSHOT_FROZEN at that clone. ◦ The dbt model price_yoy compares each product's frozen price and title with today's dim_products, and labels it added, removed, repriced, retitled or unchanged. ◦ summarize_yoy logs the counts.
+         * (evidence/src/dags__hw32_eoy_snapshot.py.txt, evidence/src/dbt_models__history__price_yoy.sql.txt)
+         * Why one table and not the whole database: dbt rebuilds every ANALYTICS table with CREATE OR REPLACE on each run, which restarts its Time Travel history. The snapshot, by contrast, is merged in place. It is a TRANSIENT table (dbt's default), so Time Travel reaches back only 1 day (the log shows retention=1). That is why the clone must be taken at the year boundary: a year-end state cannot be cloned weeks later.
+         * Demo before Jan 1. The DAG takes an as_of parameter. Run of Nov 24 1:21 AM with as_of 1:18 AM, just before run 3 (evidence/92_eoy_logs.txt, evidence/92_price_yoy.txt):
+freeze_snapshot  source HW32.SNAPSHOTS.PRODUCTS_SNAPSHOT kind=TRANSIENT retention=1 day(s)
+freeze_snapshot  cloned HW32.SNAPSHOTS.PRODUCTS_SNAPSHOT_PIT_20261124_0118 as of 2026-11-24 01:18:00 -08:00:
+                2678 snapshot rows then, 2805 now
+summarize_yoy    Operator output is: [[(..., 'repriced', 83, Decimal('1.63')), (..., 'retitled', 44, ...),
+                (..., 'unchanged', 2424, ...)]]
+         * The 83 repriced products (−19.45% to +19.67%) and the 44 retitled ones are exactly run 3's changes: 83 price and 44 title (evidence/08_source_diffs.txt).
+9.3 Prototype schema
+         * hw32_prototype (manual) runs these tasks: ◦ clone_analytics_schema runs CREATE OR REPLACE SCHEMA HW32.PROTOTYPE CLONE HW32.ANALYTICS. ◦ dbt builds the new model price_bands with the proto target. Its ref('dim_products') therefore reads the cloned table, and prod is never written. ◦ show_results prints the table. ◦ drop_prototype_schema drops the schema even if an earlier task failed (trigger rule all_done). ◦ fail_if_prototype_failed runs only if the clone, the dbt build or show_results failed (trigger rule one_failed), so such a run still ends red after the cleanup. On success it is skipped.
+         * (evidence/src/dags__hw32_prototype.py.txt)
+         * The prototype model groups the current catalog into price bands. For each band it reports the median price, the share of the catalog (RATIO_TO_REPORT), and how many products were ever repriced, taken from the SCD2 history (evidence/src/dbt_models__prototype__price_bands.sql.txt).
+         * Run of Nov 24 2:08 PM (evidence/93_prototype_dbt_logs.txt, evidence/93_prototype_logs.txt): price_bands was built in PROTOTYPE (target='proto') and its 3 tests passed. Then DROP SCHEMA IF EXISTS HW32.PROTOTYPE ran, and the schema no longer exists. Result:
+band        products  median   share  repriced
+under $25      532     15.98   20.9%  42 (7.9%)
+$25-99         930     46.98   36.5%  59 (6.3%)
+$100-499       834    187.075  32.7%  58 (7.0%)
+$500+          255    919.29   10.0%   9 (3.5%)
+
+9.4 Backup and restore
+         * Daily backup: hw32_daily_backup runs at midnight Pacific. Its tasks: ◦ backup_name derives HW32_BACKUP_<yyyymmdd> from the run's Pacific date. Airflow 3 manual runs have no logical date, so the spec's {{ ds_nodash }} is undefined there. ◦ backup_database runs CREATE DATABASE IF NOT EXISTS HW32_BACKUP_<yyyymmdd> CLONE HW32. IF NOT EXISTS means a second run on the same day cannot overwrite a good backup. ◦ prune_old_backups drops every backup dated before today minus 6 days, so it keeps 7: today's and the 6 before it.
+         * (evidence/src/dags__hw32_daily_backup.py.txt)
+         * Pruning test, Nov 24. Two fake old backups, HW32_BACKUP_20261116 and HW32_BACKUP_20261118, were created by hand at 12:33 AM (evidence/94_prune_test_fixtures.txt). The DAG run at 12:36 AM then logged (evidence/94_backup_logs.txt):
+prune_old_backups  dropped HW32_BACKUP_20261116
+prune_old_backups  backups kept (>= 20261118): ['HW32_BACKUP_20261118', 'HW32_BACKUP_20261124']
+         * 20261118 is exactly on the 7-day boundary, so it was kept; it was dropped by hand afterward. In that run, backup_database started before backup_name had returned, so the name rendered as None (its log shows CREATE DATABASE IF NOT EXISTS None CLONE HW32). The later runs render the name correctly. The real Nov 24 backup, HW32_BACKUP_20261124, already existed: the scheduled midnight run created it at 12:33 AM, on its 4th try, after the connection fix described in §2 (evidence/01_snowflake_jwt_failure.txt, evidence/94_backups.txt).
+         * Restore: hw32_restore (manual) has three tasks: ◦ pick_backup takes the newest HW32_BACKUP_*, or a date passed as a parameter. ◦ restore_snapshots clones that backup's SNAPSHOTS schema into HW32.SNAPSHOTS_RESTORE and checks that the clone isn't empty. It then swaps the clone with HW32.SNAPSHOTS in one ALTER SCHEMA … SWAP WITH, and keeps the old schema as SNAPSHOTS_PRE_RESTORE_<time>. ◦ rerun_pipeline triggers hw32_products_pipeline and waits for it to finish.
+         * Only SNAPSHOTS is restored. The landing table RAW.STG_PRODUCTS_RAW is reloaded from the source on every run, RAW.PRODUCT_RATINGS is re-created by the 9.1 DAG's promotion step, and the pipeline's dbt run rebuilds dim_products from the snapshot. The snapshot history is the only data nothing else can recreate (evidence/src/dags__hw32_restore.py.txt, evidence/src/dags__hw32_dev_clone_rating.py.txt).
+         * Restore run of Nov 24 12:39 AM (evidence/94_restore_logs.txt):
+pick_backup        restoring from HW32_BACKUP_20261124 (available: ['HW32_BACKUP_20261124'])
+restore_snapshots  restored 2678 snapshot rows from HW32_BACKUP_20261124;
+                  previous schema kept as SNAPSHOTS_PRE_RESTORE_20261124_003926
+verify             (of the hw32_products_pipeline run that rerun_pipeline triggered, 12:39 AM)
+                 dim rows=2678 current=2551 products=2551 history=127
+         * The restore ran on intact data (before run 3), so it shows that the procedure works, not that lost rows came back.
+         * Lesson: dbt creates its tables and snapshots on Snowflake as TRANSIENT, and a transient table cannot be cloned into a permanent one. Trying it fails with "Transient object cannot be cloned to a permanent object." (evidence/10_transient_clone_error.txt)
+10. Takeaways and Cost (rubric item 10)
+         1. ELT inside the warehouse
+         2. SCD Type 2 with dbt snapshots (127 history rows, one current row per product)
+         3. Retry-safe, transactional loading
+         4. Zero-copy cloning for cheap environments; transient-table caveat
+         5. Cost: ~0.156 credits total, ~0.133 tonight; X-Small, 60s auto-suspend; per-run estimate ~0.03–0.05 credits
+         * [Screenshot: WAREHOUSE_METERING_HISTORY results]  
+11. Extension Idea (rubric item 11)
+            * Incremental loads: external stage + Snowpipe or Stream/Task, dbt incremental model; backups as dbt post-hook
+12. GenAI Disclosure
+            * Tools used, what they helped with (setup troubleshooting, code drafts, writeup structure), and what the author verified/ran personally.
+Appendix
+            * Repo/file listing; full DAG and dbt code

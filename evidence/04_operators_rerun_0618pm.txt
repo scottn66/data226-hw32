@@ -1,0 +1,11 @@
+dag=hw32_products_pipeline run=manual__2026-11-25T02:18:06.417949+00:00 state=success start=2026-11-24 18:18:07 PST end=2026-11-24 18:19:03 PST
+  extract                                          success    try=1 _PythonDecoratedOperator
+  load_staging                                     success    try=1 _PythonDecoratedOperator
+  dbt_transform.stg_products.run                   success    try=1 DbtRunLocalOperator
+  dbt_transform.stg_products.test                  success    try=1 DbtTestLocalOperator
+  dbt_transform.products_snapshot_snapshot         success    try=1 DbtSnapshotLocalOperator
+  dbt_transform.dim_products.run                   success    try=1 DbtRunLocalOperator
+  dbt_transform.dim_products.test                  success    try=1 DbtTestLocalOperator
+  dbt_transform.scd2_matches_snapshot_test         success    try=1 DbtTestLocalOperator
+  verify                                           success    try=1 _PythonDecoratedOperator
+  clone_dev_database                               success    try=1 SQLExecuteQueryOperator

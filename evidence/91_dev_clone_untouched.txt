@@ -1,0 +1,16 @@
+# captured 2026-11-24 18:49:52 PST via Airflow connection snowflake_conn (read-only)
+
+>> SELECT COUNT(*), COUNT(rating), ROUND(AVG(rating), 2), MIN(rating), MAX(rating) FROM HW32.ANALYTICS.DIM_PRODUCTS WHERE is_current
+   COUNT(*) | COUNT(RATING) | ROUND(AVG(RATING), 2) | MIN(RATING) | MAX(RATING)
+   2551 | 2551 | 2.99 | 1.0 | 5.0
+   (1 rows)
+
+>> SHOW DATABASES LIKE 'HW32_DEV'
+   created_on | name | is_default | is_current | origin | owner | comment | options | retention_time | kind | owner_role_type | object_visibility | data_quality_monitoring_settings | resharing_settings
+   2026-11-24 18:18:57.297000-08:00 | HW32_DEV | N | N |  | ACCOUNTADMIN |  |  | 1 | STANDARD | ROLE | None | None | None
+   (1 rows)
+
+>> SELECT COUNT(*) FROM HW32.RAW.PRODUCT_RATINGS
+   COUNT(*)
+   2551
+   (1 rows)

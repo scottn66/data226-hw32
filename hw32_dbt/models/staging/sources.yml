@@ -1,0 +1,19 @@
+version: 2
+sources:
+  - name: raw
+    database: "{{ target.database }}"   # HW32 in prod, HW32_DEV in the dev clone
+    schema: RAW
+    tables:
+      - name: stg_products_raw
+        description: Home Depot CSV, reloaded in full by the Airflow load_staging task.
+      - name: product_ratings
+        description: >
+          9.1 feature feed (simulated; the Kaggle data has no ratings). Created in HW32_DEV by
+          hw32_dev_clone_rating and promoted to prod by zero-copy clone after dev tests pass.
+
+  - name: snapshots
+    database: "{{ target.database }}"
+    schema: SNAPSHOTS
+    tables:
+      - name: products_snapshot_frozen
+        description: 9.2 view over the latest point-in-time clone, created by hw32_eoy_snapshot.

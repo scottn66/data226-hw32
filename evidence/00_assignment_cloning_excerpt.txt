@@ -1,0 +1,57 @@
+# Excerpt of the HW 3.2 assignment text as Scott pasted it on Nov 23, 2026 (9.2 and 9.4 snippets), saved 2026-11-24 20:15 PST
+9.2: [1 point] Point-in-Time Analysis
+Objective: Use zero-copy cloning to create a snapshot of the database for historical analysis.
+Steps:
+Create a clone of the product catalog database at a specific point in time:
+SQL
+CREATE DATABASE product_catalog_eoy_2023
+CLONE product_catalog AT(TIMESTAMP => '2023-12-31 23:59:59'::timestamp_ntz);
+Implement a dbt model that performs year-over-year analysis using this cloned database.
+Create an Airflow task to generate this clone at the end of each year:
+python
+create_eoy_snapshot = SnowflakeOperator(
+    task_id='create_eoy_snapshot',
+    sql="""
+    CREATE OR REPLACE DATABASE product_catalog_eoy_{{ execution_date.year }}
+    CLONE product_catalog AT(TIMESTAMP => '{{ execution_date.year }}-12-31 23:59:59'::timestamp_ntz);
+    """,
+    snowflake_conn_id='snowflake_conn',
+    dag=dag
+)
+
+9.4: [1 point] Backup and Restore Strategy
+Objective: Implement a backup and restore strategy using zero-copy cloning.
+Steps:
+Create a daily backup of the production database:
+SQL
+CREATE OR REPLACE DATABASE product_catalog_backup_{{ ds_nodash }}
+CLONE product_catalog;
+2. Implement an Airflow task to manage backups, keeping only the last 7 days:
+Python
+manage_backups = SnowflakeOperator(
+    task_id='manage_backups',
+    sql="""
+    -- Create today's backup
+    CREATE DATABASE IF NOT EXISTS product_catalog_backup_{{ ds_nodash }}
+    CLONE product_catalog;
+    -- Drop backups older than 7 days
+    DROP DATABASE IF EXISTS product_catalog_backup_{{ macros.ds_add(ds, -7) }};
+    """,
+    snowflake_conn_id='snowflake_conn',
+    dag=dag
+)
+3. Implement a restore procedure using the most recent backup.
+
+## Airflow DAG structure snippet (imports and schedule)
+Airflow DAG structure:
+from airflow import DAG
+from airflow.operators.python_operator import PythonOperator
+from airflow.providers.snowflake.operators.snowflake import SnowflakeOperator
+from airflow.providers.amazon.aws.transfers.s3_to_snowflake import S3ToSnowflakeOperator
+from airflow.operators.bash_operator import BashOperator
+dag = DAG(
+    'product_catalog_etl',
+    default_args=default_args,
+    description='ETL for Product Catalog',
+    schedule_interval=timedelta(days=1),
+)

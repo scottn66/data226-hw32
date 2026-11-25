@@ -1,0 +1,102 @@
+# number_diff iter/1/doc.txt vs /Users/scottnelson/Desktop/226/hw32/evidence (410 evidence tokens)
+
+## header: PASS  (3 traced, 0 untraced)
+   ok   '226' -> evidence/src/setup.sql.txt
+   ok   '3.2' -> evidence/src/dags__hw32_common.py.txt
+   ok   '9' -> evidence/00_airflow_runs.txt
+
+## overview: PASS  (1 traced, 0 untraced)
+   ok   '2' -> evidence/01_versions.txt
+
+## item 1: PASS  (16 traced, 0 untraced)
+   ok   '60' -> evidence/01_versions.txt
+   ok   '1.10' -> evidence/01_versions.txt
+   ok   '1.10' -> evidence/01_versions.txt
+   ok   '3.12' -> evidence/01_versions.txt
+   ok   '3.4.0' -> evidence/01_versions.txt
+   ok   '3.4' -> evidence/01_versions.txt
+   ok   '1,' -> evidence/00_airflow_runs.txt
+   ok   '3.14' -> evidence/01_versions.txt
+   ok   '1.16.0' -> evidence/01_versions.txt
+   ok   '6.21.0' -> evidence/01_versions.txt
+   ok   '3.0.0' -> evidence/01_versions.txt
+   ok   '5.2.0' -> evidence/01_versions.txt
+   ok   '1.10.23' -> evidence/01_versions.txt
+   ok   '1.10.8' -> evidence/01_versions.txt
+   ok   '3.12' -> evidence/01_versions.txt
+   ok   '5' -> evidence/02_dataset.txt
+   png  01_dbt_debug_connection_ok.png: exists screenshots/hw32_screenshots/01_dbt_debug_connection_ok.png
+
+## item 2: PASS  (7 traced, 0 untraced)
+   ok   '2,551' -> evidence/02_dataset.txt
+   ok   '14' -> evidence/00_airflow_runs.txt
+   ok   '144' -> evidence/02_dataset.txt
+   ok   '373' -> evidence/02_dataset.txt
+   ok   '1,' -> evidence/00_airflow_runs.txt
+   ok   '2,' -> evidence/01_versions.txt
+   ok   '3' -> evidence/00_airflow_runs.txt
+
+## item 3: PASS  (2 traced, 0 untraced)
+   ok   '2,551' -> evidence/02_dataset.txt
+   ok   '14' -> evidence/00_airflow_runs.txt
+
+## item 4: PASS  (13 traced, 0 untraced)
+   ok   '2,' -> evidence/01_versions.txt
+   ok   '1' -> evidence/00_airflow_runs.txt
+   ok   '3' -> evidence/00_airflow_runs.txt
+   ok   '2805,' -> evidence/08_run3_verify.txt
+   ok   '2551,' -> evidence/02_dataset.txt
+   ok   '2551,' -> evidence/02_dataset.txt
+   ok   '254' -> evidence/08_run3_verify.txt
+   ok   '9.1' -> evidence/src/dags__hw32_dev_clone_rating.py.txt
+   ok   '11,' -> evidence/00_airflow_runs.txt
+   ok   '1,' -> evidence/00_airflow_runs.txt
+   ok   '2,' -> evidence/01_versions.txt
+   ok   '1' -> evidence/00_airflow_runs.txt
+   ok   '0' -> evidence/00_airflow_runs.txt
+   png  04_airflow_dbt_task_group_success.png: exists screenshots/hw32_screenshots/04_airflow_dbt_task_group_success.png
+
+## items 5-6: PASS  (1 traced, 0 untraced)
+   ok   '12' -> evidence/00_airflow_runs.txt
+   png  02_dbt_build_pass11.png: exists screenshots/hw32_screenshots/02_dbt_build_pass11.png
+
+## item 7: PASS  (0 traced, 0 untraced)
+   png  03_airflow_cosmos_operators_task_list.png: exists screenshots/hw32_screenshots/03_airflow_cosmos_operators_task_list.png
+
+## item 8: PASS  (9 traced, 0 untraced)
+   ok   '1' -> evidence/00_airflow_runs.txt
+   ok   '2551,' -> evidence/02_dataset.txt
+   ok   '2551' -> evidence/02_dataset.txt
+   ok   '5%' -> evidence/02_dataset.txt
+   ok   '20%' -> evidence/00_airflow_runs.txt
+   ok   '2' -> evidence/01_versions.txt
+   ok   '2678,' -> evidence/10_timetravel_before_run3.txt
+   ok   '2551,' -> evidence/02_dataset.txt
+   ok   '127' -> evidence/08_snapshot_by_run.txt
+   png  05_airflow_run1_all_green_verify.png: exists screenshots/hw32_screenshots/05_airflow_run1_all_green_verify.png
+   png  06_airflow_run2_after_mutation_history127.png: exists screenshots/hw32_screenshots/06_airflow_run2_after_mutation_history127.png
+   png  07_scd2_dim_products_two_versions.png: exists screenshots/hw32_screenshots/07_scd2_dim_products_two_versions.png
+
+## item 9: FAIL  (4 traced, 1 untraced)
+   MISS '-1800' (canon -1800)
+   ok   '1' -> evidence/00_airflow_runs.txt
+   ok   '1' -> evidence/00_airflow_runs.txt
+   ok   '30' -> evidence/00_airflow_runs.txt
+   ok   '7' -> evidence/00_airflow_runs.txt
+
+## item 10: FAIL  (3 traced, 4 untraced)
+   MISS '0.156' (canon 0.156)
+   MISS '0.133' (canon 0.133)
+   MISS '0.03' (canon 0.03)
+   MISS '0.05' (canon 0.05)
+   ok   '2' -> evidence/01_versions.txt
+   ok   '127' -> evidence/08_snapshot_by_run.txt
+   ok   '60' -> evidence/01_versions.txt
+
+## item 11: PASS  (0 traced, 0 untraced)
+
+## genai: PASS  (0 traced, 0 untraced)
+
+## appendix: PASS  (0 traced, 0 untraced)
+
+# total untraced: 5

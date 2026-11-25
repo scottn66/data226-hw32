@@ -1,0 +1,19 @@
+# local comparison of the three source files (read-only), product_id as key
+run 1: original.csv  rows=2551
+run 2: run2.csv  rows=2551
+run 3: home_depot_data_1_2021_12.csv  rows=2551
+
+run 1 -> run 2 (original.csv -> run2.csv):
+  changed products=127  price changes=91  title changes=36
+  added=0  removed=0  other columns changed=none
+  scraped_at changed in 0 rows
+  share of rows changed = 127/2551 = 5.0%
+
+run 2 -> run 3 (run2.csv -> home_depot_data_1_2021_12.csv):
+  changed products=127  price changes=83  title changes=44
+  added=0  removed=0  other columns changed=none
+  scraped_at changed in 0 rows
+  share of rows changed = 127/2551 = 5.0%
+
+products changed in both run 2 and run 3: 6
+products changed in run 2 or run 3: 248

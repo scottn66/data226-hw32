@@ -1,0 +1,19 @@
+# dbt ls on hw32_dbt (same files as airflow/dags/dbt/hw32_dbt; diff -rq showed no differences)
+model     dim_products
+model     stg_products
+snapshot  products_snapshot
+test      accepted_values_dim_products_change_type__initial__price_change__title_change__other_change
+test      no_overlapping_validity
+test      not_null_dim_products_product_id
+test      not_null_dim_products_product_sk
+test      not_null_dim_products_version
+test      not_null_stg_products_price
+test      not_null_stg_products_product_id
+test      one_current_row_per_product
+test      rating_in_range
+test      scd2_matches_snapshot
+test      unique_dim_products_product_sk
+test      unique_stg_products_product_id
+
+counts: models=2 snapshots=1 tests=12 total=15
+diff -rq hw32_dbt airflow/dags/dbt/hw32_dbt: identical

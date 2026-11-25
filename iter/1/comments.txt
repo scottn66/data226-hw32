@@ -1,0 +1,31 @@
+# Open comments on the doc, read 2026-11-24 ~18:55 PT (built-in browser, read-only DOM read; nothing typed)
+# 23 open threads, all "[Claude]" comments posted 2:21-2:27 PM, no replies. 12 of the original 35 are resolved.
+# Docs shows "Suggestion was deleted" on each card. Comment ids are not exposed in the DOM, so threads are
+# referred to by number and opening words. Full texts match hw32/writeup-comments.md (same author, same day).
+
+#1  sec 5 (item 4)  "Claimed but not shown (1 point). Real evidence: the scheduled run for Nov 23 ... extract failed 3 times ... callback logged 'HW32 pipeline FAILED at task extract (try 3)'"
+#2  sec 5 (item 4)  "Still a placeholder (item 4). Suggested excerpt: the dag decorator ... Add one sentence on operators: ... SQLExecuteQueryOperator ... SQLCheckOperator ... Cosmos"
+#3  sec 6 (items 5-6)  "Out of date: 8 tests then, 12 now. Retake with dbt build ... PASS=15 TOTAL=15"
+#4  sec 7 (item 7)  "Worth two sentences here. Why Cosmos instead of the spec's BashOperator ... should_detach_multiple_parents_tests=True"
+#5  sec 7 (item 7)  "Good evidence, but taken mid-run (most tasks show No Status). Retake ..."
+#6  sec 8 (item 8)  "There are three runs now (item 8). Run 1 ... Run 2 ... Run 3 ..."
+#7  sec 8 (item 8)  "The key numbers are unreadable at page size. Crop 05 and 06 down to the verify log line ..."
+#8  sec 8 (item 8)  "07 reads like a duplicate row: product 204877843 ... Replace it with product 205235421"
+#9  sec 9 (item 9)  "A small table here helps the grader match the four sub-items (4 points) to DAGs ..."
+#10 sec 9.1  "That version of the DAG (clone_prod_to_dev -> add_rating -> verify_isolation) no longer exists ..."
+#11 sec 9.2  "Replace with what hw32_eoy_snapshot does ..."
+#12 sec 9.2  "Two corrections. The 1-day cap comes from the table being TRANSIENT ..."
+#13 sec 9.3  "Right idea, but no evidence yet. hw32_prototype ... Before run 3 ... Re-run the DAG before taking the screenshot"
+#14 sec 9.4  "Out of date. Now backup_name -> backup_database -> prune_old_backups ..."
+#15 sec 9.4  "Replace with the hw32_restore DAG (manual only) ..."
+#16 sec 9.4  "Stale: this is the old backup -> prune_old DAG. Replace with the new prune-test run ..."
+#17 sec 9.4  "True, and confirmed: cloning the transient snapshot into a permanent table fails ..."
+#18 sec 10 (item 10)  "Each takeaway needs 2-3 sentences: what you tried, what you saw, what it means ..."
+#19 sec 10 (item 10)  "These numbers are out of date. WAREHOUSE_METERING_HISTORY ..."
+#20 sec 10 (item 10)  "This shows only four hourly rows from Nov 20 and Nov 22. Retake with totals by warehouse ..."
+#21 sec 11 (item 11)  "The question asks how you'd extend the exercise to make the learning experience better ..."
+#22 sec 12 GenAI  "Still the template text, word for word ..."
+#23 Appendix  "Still a placeholder. A trimmed file listing is in hw32/writeup-comments.md (A1) ..."
+
+# Already addressed in the doc text but still open: #2 (code excerpt is in; the operators sentence is not),
+# #4 (both sentences are in).

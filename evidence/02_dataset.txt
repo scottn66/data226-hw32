@@ -1,0 +1,21 @@
+# captured 2026-11-24 18:49:33 PST via Airflow connection snowflake_conn (read-only)
+
+>> SELECT COUNT(*) AS rows_, COUNT(DISTINCT product_id) AS distinct_product_id, COUNT_IF(sku IS NULL) AS null_sku, COUNT(sku) - COUNT(DISTINCT sku) AS repeat_sku FROM HW32.RAW.STG_PRODUCTS_RAW
+   ROWS_ | DISTINCT_PRODUCT_ID | NULL_SKU | REPEAT_SKU
+   2551 | 2551 | 144 | 373
+   (1 rows)
+
+>> SELECT COUNT(*) AS n_columns FROM HW32.INFORMATION_SCHEMA.COLUMNS WHERE table_schema = 'RAW' AND table_name = 'STG_PRODUCTS_RAW'
+   N_COLUMNS
+   14
+   (1 rows)
+
+>> SELECT availability, COUNT(*) FROM HW32.RAW.STG_PRODUCTS_RAW GROUP BY 1
+   AVAILABILITY | COUNT(*)
+   InStock | 2551
+   (1 rows)
+
+>> SELECT MIN(scraped_at), MAX(scraped_at), COUNT(DISTINCT scraped_at) FROM HW32.RAW.STG_PRODUCTS_RAW
+   MIN(SCRAPED_AT) | MAX(SCRAPED_AT) | COUNT(DISTINCT SCRAPED_AT)
+   2021-12-14 00:55:53.060268 | 2021-12-14 01:05:09.377767 | 2551
+   (1 rows)

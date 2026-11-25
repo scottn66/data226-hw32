@@ -1,0 +1,9 @@
+# captured 2026-11-24 19:20:44 PST via Airflow connection snowflake_conn (read-only)
+
+>> SELECT start_time, query_type, execution_status, LEFT(query_text, 120) AS query_text FROM SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY WHERE start_time >= '2026-11-23' AND query_text ILIKE '%HW32_BACKUP_2026111%' ORDER BY start_time
+   START_TIME | QUERY_TYPE | EXECUTION_STATUS | QUERY_TEXT
+   2026-11-24 00:33:32.273000-08:00 | CREATE | SUCCESS | create database hw32_backup_20261116 clone hw32
+   2026-11-24 00:33:37.027000-08:00 | CREATE | SUCCESS | create database hw32_backup_20261118 clone hw32
+   2026-11-24 00:37:48.330000-08:00 | DROP | SUCCESS | DROP DATABASE IF EXISTS HW32_BACKUP_20261116
+   2026-11-24 00:38:38.240000-08:00 | DROP | SUCCESS | drop database hw32_backup_20261118
+   (4 rows)

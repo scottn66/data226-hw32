@@ -1,0 +1,247 @@
+# number_diff iter/final/doc.txt vs /Users/scottnelson/Desktop/226/hw32/evidence (487 evidence tokens)
+
+## header: PASS  (3 traced, 0 untraced)
+   ok   '226' -> evidence/src/setup.sql.txt
+   ok   '3.2' -> evidence/00_assignment_cloning_excerpt.txt
+   ok   '9' -> evidence/00_airflow_runs.txt
+
+## overview: PASS  (1 traced, 0 untraced)
+   ok   '2' -> evidence/00_assignment_cloning_excerpt.txt
+
+## item 1: PASS  (16 traced, 0 untraced)
+   ok   '60' -> evidence/01_versions.txt
+   ok   '1.10' -> evidence/01_versions.txt
+   ok   '1.10' -> evidence/01_versions.txt
+   ok   '3.12' -> evidence/01_versions.txt
+   ok   '3.4.0' -> evidence/01_versions.txt
+   ok   '3.4' -> evidence/01_versions.txt
+   ok   '1,' -> evidence/00_airflow_runs.txt
+   ok   '3.14' -> evidence/01_versions.txt
+   ok   '1.16.0' -> evidence/01_versions.txt
+   ok   '6.21.0' -> evidence/01_versions.txt
+   ok   '3.0.0' -> evidence/01_versions.txt
+   ok   '5.2.0' -> evidence/01_versions.txt
+   ok   '1.10.23' -> evidence/01_versions.txt
+   ok   '1.10.8' -> evidence/01_versions.txt
+   ok   '3.12' -> evidence/01_versions.txt
+   ok   '5' -> evidence/02_dataset.txt
+   png  01_dbt_debug_connection_ok.png: exists screenshots/hw32_screenshots/01_dbt_debug_connection_ok.png
+
+## item 2: PASS  (7 traced, 0 untraced)
+   ok   '2,551' -> evidence/01_snowflake_jwt_failure.txt
+   ok   '14' -> evidence/00_airflow_runs.txt
+   ok   '144' -> evidence/02_dataset.txt
+   ok   '373' -> evidence/02_dataset.txt
+   ok   '1,' -> evidence/00_airflow_runs.txt
+   ok   '2,' -> evidence/00_assignment_cloning_excerpt.txt
+   ok   '3' -> evidence/00_airflow_runs.txt
+
+## item 3: PASS  (2 traced, 0 untraced)
+   ok   '2,551' -> evidence/01_snowflake_jwt_failure.txt
+   ok   '14' -> evidence/00_airflow_runs.txt
+
+## item 4: PASS  (13 traced, 0 untraced)
+   ok   '2,' -> evidence/00_assignment_cloning_excerpt.txt
+   ok   '1' -> evidence/00_airflow_runs.txt
+   ok   '3' -> evidence/00_airflow_runs.txt
+   ok   '2805,' -> evidence/08_run3_verify.txt
+   ok   '2551,' -> evidence/01_snowflake_jwt_failure.txt
+   ok   '2551,' -> evidence/01_snowflake_jwt_failure.txt
+   ok   '254' -> evidence/08_run3_verify.txt
+   ok   '9.1' -> evidence/06_dbt_project_tree.txt
+   ok   '11,' -> evidence/00_airflow_runs.txt
+   ok   '1,' -> evidence/00_airflow_runs.txt
+   ok   '2,' -> evidence/00_assignment_cloning_excerpt.txt
+   ok   '1' -> evidence/00_airflow_runs.txt
+   ok   '0' -> evidence/00_airflow_runs.txt
+   png  04_airflow_dbt_task_group_success.png: exists screenshots/hw32_screenshots/04_airflow_dbt_task_group_success.png
+
+## items 5-6: PASS  (30 traced, 0 untraced)
+   ok   '9.1' -> evidence/06_dbt_project_tree.txt
+   ok   '9.2' -> evidence/00_assignment_cloning_excerpt.txt
+   ok   '9.2' -> evidence/00_assignment_cloning_excerpt.txt
+   ok   '9.3' -> evidence/src/dags__hw32_prototype.py.txt
+   ok   '10,2' -> evidence/06_dbt_project_tree.txt
+   ok   '12' -> evidence/00_airflow_runs.txt
+   ok   '12' -> evidence/00_airflow_runs.txt
+   ok   '3' -> evidence/00_airflow_runs.txt
+   ok   '0' -> evidence/00_airflow_runs.txt
+   ok   '0' -> evidence/00_airflow_runs.txt
+   ok   '0' -> evidence/00_airflow_runs.txt
+   ok   '0' -> evidence/00_airflow_runs.txt
+   ok   '3' -> evidence/00_airflow_runs.txt
+   ok   '8' -> evidence/00_airflow_runs.txt
+   ok   '0' -> evidence/00_airflow_runs.txt
+   ok   '0' -> evidence/00_airflow_runs.txt
+   ok   '0' -> evidence/00_airflow_runs.txt
+   ok   '0' -> evidence/00_airflow_runs.txt
+   ok   '8' -> evidence/00_airflow_runs.txt
+   ok   '1' -> evidence/00_airflow_runs.txt
+   ok   '0' -> evidence/00_airflow_runs.txt
+   ok   '0' -> evidence/00_airflow_runs.txt
+   ok   '0' -> evidence/00_airflow_runs.txt
+   ok   '0' -> evidence/00_airflow_runs.txt
+   ok   '1' -> evidence/00_airflow_runs.txt
+   ok   '0' -> evidence/00_airflow_runs.txt
+   ok   '3,' -> evidence/00_airflow_runs.txt
+   ok   '254' -> evidence/08_run3_verify.txt
+   ok   '8' -> evidence/00_airflow_runs.txt
+   ok   '8' -> evidence/00_airflow_runs.txt
+
+## item 7: PASS  (0 traced, 0 untraced)
+   png  03_airflow_cosmos_operators_task_list.png: exists screenshots/hw32_screenshots/03_airflow_cosmos_operators_task_list.png
+
+## item 8: PASS  (9 traced, 0 untraced)
+   ok   '1' -> evidence/00_airflow_runs.txt
+   ok   '2551,' -> evidence/01_snowflake_jwt_failure.txt
+   ok   '2551' -> evidence/01_snowflake_jwt_failure.txt
+   ok   '5%' -> evidence/02_dataset.txt
+   ok   '20%' -> evidence/00_airflow_runs.txt
+   ok   '2' -> evidence/00_assignment_cloning_excerpt.txt
+   ok   '2678,' -> evidence/10_timetravel_before_run3.txt
+   ok   '2551,' -> evidence/01_snowflake_jwt_failure.txt
+   ok   '127' -> evidence/08_snapshot_by_run.txt
+   png  05_airflow_run1_all_green_verify.png: exists screenshots/hw32_screenshots/05_airflow_run1_all_green_verify.png
+   png  06_airflow_run2_after_mutation_history127.png: exists screenshots/hw32_screenshots/06_airflow_run2_after_mutation_history127.png
+   png  07_scd2_dim_products_two_versions.png: exists screenshots/hw32_screenshots/07_scd2_dim_products_two_versions.png
+
+## item 9: PASS  (80 traced, 0 untraced)
+   ok   '9.1' -> evidence/06_dbt_project_tree.txt
+   ok   '9.4' -> evidence/00_assignment_cloning_excerpt.txt
+   ok   '9.1' -> evidence/06_dbt_project_tree.txt
+   ok   '9.2' -> evidence/00_assignment_cloning_excerpt.txt
+   ok   '9.3' -> evidence/src/dags__hw32_prototype.py.txt
+   ok   '9.4' -> evidence/00_assignment_cloning_excerpt.txt
+   ok   '1.0' -> evidence/06_dbt_project_tree.txt
+   ok   '5.0' -> evidence/02_dataset.txt
+   ok   '7' -> evidence/00_airflow_runs.txt
+   ok   '8' -> evidence/00_airflow_runs.txt
+   ok   '8' -> evidence/00_airflow_runs.txt
+   ok   '8' -> evidence/00_airflow_runs.txt
+   ok   '2728168932473494028' -> evidence/91_dev_clone_logs.txt
+   ok   '2728168932473494028' -> evidence/91_dev_clone_logs.txt
+   ok   '2,551' -> evidence/01_snowflake_jwt_failure.txt
+   ok   '2.99' -> evidence/91_dev_clone_untouched.txt
+   ok   '0' -> evidence/00_airflow_runs.txt
+   ok   '0' -> evidence/00_airflow_runs.txt
+   ok   '1' -> evidence/00_airflow_runs.txt
+   ok   '1' -> evidence/00_airflow_runs.txt
+   ok   '1' -> evidence/00_airflow_runs.txt
+   ok   '1' -> evidence/00_airflow_runs.txt
+   ok   '3' -> evidence/00_airflow_runs.txt
+   ok   '1' -> evidence/00_airflow_runs.txt
+   ok   '2678' -> evidence/10_timetravel_before_run3.txt
+   ok   '2805' -> evidence/08_run3_verify.txt
+   ok   '83,' -> evidence/08_source_diffs.txt
+   ok   '1.63' -> evidence/92_eoy_logs.txt
+   ok   '44,' -> evidence/00_airflow_runs.txt
+   ok   '2424,' -> evidence/92_eoy_logs.txt
+   ok   '83' -> evidence/08_source_diffs.txt
+   ok   '−19.45%' -> evidence/92_price_yoy.txt
+   ok   '+19.67%' -> evidence/92_price_yoy.txt
+   ok   '44' -> evidence/00_airflow_runs.txt
+   ok   '3' -> evidence/00_airflow_runs.txt
+   ok   '83' -> evidence/08_source_diffs.txt
+   ok   '44' -> evidence/00_airflow_runs.txt
+   ok   '3' -> evidence/00_airflow_runs.txt
+   ok   '$25' -> evidence/00_airflow_runs.txt
+   ok   '532' -> evidence/93_prototype_logs.txt
+   ok   '15.98' -> evidence/93_prototype_logs.txt
+   ok   '20.9%' -> evidence/93_prototype_logs.txt
+   ok   '42' -> evidence/00_airflow_runs.txt
+   ok   '7.9%' -> evidence/93_prototype_logs.txt
+   ok   '$25' -> evidence/00_airflow_runs.txt
+   ok   '99' -> evidence/93_prototype_logs.txt
+   ok   '930' -> evidence/93_prototype_logs.txt
+   ok   '46.98' -> evidence/93_prototype_logs.txt
+   ok   '36.5%' -> evidence/93_prototype_logs.txt
+   ok   '59' -> evidence/00_airflow_runs.txt
+   ok   '6.3%' -> evidence/93_prototype_logs.txt
+   ok   '$100' -> evidence/01_versions.txt
+   ok   '499' -> evidence/93_prototype_logs.txt
+   ok   '834' -> evidence/93_prototype_logs.txt
+   ok   '187.075' -> evidence/93_prototype_logs.txt
+   ok   '32.7%' -> evidence/93_prototype_logs.txt
+   ok   '58' -> evidence/91_dev_clone_dbt_logs.txt
+   ok   '7.0%' -> evidence/00_airflow_runs.txt
+   ok   '$500' -> evidence/93_prototype_logs.txt
+   ok   '255' -> evidence/93_prototype_logs.txt
+   ok   '919.29' -> evidence/93_prototype_logs.txt
+   ok   '10.0%' -> evidence/00_airflow_runs.txt
+   ok   '9' -> evidence/00_airflow_runs.txt
+   ok   '3.5%' -> evidence/93_prototype_logs.txt
+   ok   '3' -> evidence/00_airflow_runs.txt
+   ok   '6' -> evidence/00_airflow_runs.txt
+   ok   '7' -> evidence/00_airflow_runs.txt
+   ok   '6' -> evidence/00_airflow_runs.txt
+   ok   '20261118' -> evidence/94_backup_logs.txt
+   ok   '20261118' -> evidence/94_backup_logs.txt
+   ok   '7' -> evidence/00_airflow_runs.txt
+   ok   '4' -> evidence/00_airflow_runs.txt
+   ok   '2' -> evidence/00_assignment_cloning_excerpt.txt
+   ok   '9.1' -> evidence/06_dbt_project_tree.txt
+   ok   '2678' -> evidence/10_timetravel_before_run3.txt
+   ok   '2678' -> evidence/10_timetravel_before_run3.txt
+   ok   '2551' -> evidence/01_snowflake_jwt_failure.txt
+   ok   '2551' -> evidence/01_snowflake_jwt_failure.txt
+   ok   '127' -> evidence/08_snapshot_by_run.txt
+   ok   '3' -> evidence/00_airflow_runs.txt
+
+## item 10: PASS  (33 traced, 0 untraced)
+   ok   '0' -> evidence/00_airflow_runs.txt
+   ok   '2,551' -> evidence/01_snowflake_jwt_failure.txt
+   ok   '127' -> evidence/08_snapshot_by_run.txt
+   ok   '127' -> evidence/08_snapshot_by_run.txt
+   ok   '2,805' -> evidence/08_run3_verify.txt
+   ok   '2,551' -> evidence/01_snowflake_jwt_failure.txt
+   ok   '0' -> evidence/00_airflow_runs.txt
+   ok   '1,153,024' -> evidence/10_storage_metrics.txt
+   ok   '1,099,264' -> evidence/10_storage_metrics.txt
+   ok   '1,104,896' -> evidence/10_storage_metrics.txt
+   ok   '1' -> evidence/00_airflow_runs.txt
+   ok   '1' -> evidence/00_airflow_runs.txt
+   ok   '2678' -> evidence/10_timetravel_before_run3.txt
+   ok   '2805' -> evidence/08_run3_verify.txt
+   ok   '9.2' -> evidence/00_assignment_cloning_excerpt.txt
+   ok   '2' -> evidence/00_assignment_cloning_excerpt.txt
+   ok   '1' -> evidence/00_airflow_runs.txt
+   ok   '3' -> evidence/00_airflow_runs.txt
+   ok   '60' -> evidence/01_versions.txt
+   ok   '300' -> evidence/10_credits.txt
+   ok   '1.262' -> evidence/10_credits.txt
+   ok   '1670' -> evidence/10_credits_r3.txt
+   ok   '1.5' -> evidence/10_credits_r3.txt
+   ok   '300' -> evidence/10_credits.txt
+   ok   '0.889' -> evidence/10_credits_r3.txt
+   ok   '742' -> evidence/10_credits_r3.txt
+   ok   '2.5' -> evidence/10_credits_r3.txt
+   ok   '60' -> evidence/01_versions.txt
+   ok   '60' -> evidence/01_versions.txt
+   ok   '60' -> evidence/01_versions.txt
+   ok   '3' -> evidence/00_airflow_runs.txt
+   ok   '0.791' -> evidence/10_credits.txt
+   ok   '0.889' -> evidence/10_credits_r3.txt
+
+## item 11: PASS  (12 traced, 0 untraced)
+   ok   '3' -> evidence/00_airflow_runs.txt
+   ok   '3.4' -> evidence/01_versions.txt
+   ok   '6.21' -> evidence/01_versions.txt
+   ok   '9.4' -> evidence/00_assignment_cloning_excerpt.txt
+   ok   '3' -> evidence/00_airflow_runs.txt
+   ok   '127' -> evidence/08_snapshot_by_run.txt
+   ok   '1.10' -> evidence/01_versions.txt
+   ok   '9.2' -> evidence/00_assignment_cloning_excerpt.txt
+   ok   '9.4' -> evidence/00_assignment_cloning_excerpt.txt
+   ok   '9.2' -> evidence/00_assignment_cloning_excerpt.txt
+   ok   '1' -> evidence/00_airflow_runs.txt
+   ok   '9.4' -> evidence/00_assignment_cloning_excerpt.txt
+
+## genai: PASS  (4 traced, 0 untraced)
+   ok   '6,' -> evidence/00_airflow_runs.txt
+   ok   '9,' -> evidence/00_airflow_runs.txt
+   ok   '10,' -> evidence/00_airflow_runs.txt
+   ok   '11,' -> evidence/00_airflow_runs.txt
+
+## appendix: PASS  (0 traced, 0 untraced)
+
+# total untraced: 0
